@@ -9,18 +9,15 @@ namespace CLARiNET
 {
     class Program
     {
-        private static ConsoleColor _savedForegroundColor = Console.ForegroundColor;
-
+ 
         static void Main(string[] args)
         {
             Options options = new Options();
             string url = "https://{host}/ccx/cc-cloud-repo/collections/";
             string host = "";
-            Program._savedForegroundColor = Console.ForegroundColor;
 
             try
             {
-                Console.CancelKeyPress += new ConsoleCancelEventHandler(Cleanup);
                 XDocument xDoc = XDocument.Parse(Resources.WDEnvironments);
                 List<XElement> envs = new List<XElement>(xDoc.Descendants(XName.Get("env")));
 
@@ -120,17 +117,10 @@ namespace CLARiNET
                 if (options.Password == null)
                 {
                     Console.WriteLine("Enter the password (will not be displayed):\n");
-                    Console.Write("->");
-                    ConsoleColor color = Console.ForegroundColor;
-                    Console.CursorVisible = false;
-                    Console.ForegroundColor = Console.BackgroundColor;
-                    options.Password = Console.ReadLine().Trim();
-                    Console.WriteLine("");
-                    Console.ForegroundColor = color;
-                    Console.CursorVisible = true;
+                    options.Password = PasswordPrompt();
                 }
 
-                Console.WriteLine("Deploying the CLAR and awaiting the result...\n\n");
+                Console.WriteLine("\n\nDeploying the CLAR and awaiting the result...\n\n");
 
                 // REST Call
                 Byte[] bytes = File.ReadAllBytes(options.ClarFile);
@@ -142,20 +132,32 @@ namespace CLARiNET
             }
             catch (Exception ex)
             {
-                Cleanup(null, null);
                 Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                Cleanup(null, null);
             }
         }
 
-        protected static void Cleanup(object sender, ConsoleCancelEventArgs args)
+        private static string PasswordPrompt()
         {
-            Console.ForegroundColor = Program._savedForegroundColor;
-            Console.CursorVisible = true;
-        }
+            string pass = string.Empty;
+            ConsoleKey key;
+            do
+            {
+                var keyInfo = Console.ReadKey(intercept: true);
+                key = keyInfo.Key;
+
+                if (key == ConsoleKey.Backspace && pass.Length > 0)
+                {
+                    Console.Write("\b \b");
+                    pass = pass[0..^1];
+                }
+                else if (!char.IsControl(keyInfo.KeyChar))
+                {
+                    Console.Write("*");
+                    pass += keyInfo.KeyChar;
+                }
+            } while (key != ConsoleKey.Enter);
+            return pass;
+        }  
 
         private static void PrintEnvironments(List<XElement> envs)
         {
