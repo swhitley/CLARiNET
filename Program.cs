@@ -9,14 +9,18 @@ namespace CLARiNET
 {
     class Program
     {
+        private static ConsoleColor _savedForegroundColor = Console.ForegroundColor;
+
         static void Main(string[] args)
         {
             Options options = new Options();
             string url = "https://{host}/ccx/cc-cloud-repo/collections/";
             string host = "";
+            Program._savedForegroundColor = Console.ForegroundColor;
 
             try
             {
+                Console.CancelKeyPress += new ConsoleCancelEventHandler(Cleanup);
                 XDocument xDoc = XDocument.Parse(Resources.WDEnvironments);
                 List<XElement> envs = new List<XElement>(xDoc.Descendants(XName.Get("env")));
 
@@ -138,8 +142,19 @@ namespace CLARiNET
             }
             catch (Exception ex)
             {
+                Cleanup(null, null);
                 Console.WriteLine(ex.Message);
             }
+            finally
+            {
+                Cleanup(null, null);
+            }
+        }
+
+        protected static void Cleanup(object sender, ConsoleCancelEventArgs args)
+        {
+            Console.ForegroundColor = Program._savedForegroundColor;
+            Console.CursorVisible = true;
         }
 
         private static void PrintEnvironments(List<XElement> envs)
