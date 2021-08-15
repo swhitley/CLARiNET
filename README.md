@@ -16,6 +16,7 @@ Here are a few ideas. (Care to add to this list in the discussions?)
 1. Download the [latest release](https://github.com/swhitley/CLARiNET/releases/latest) for your operating system.
 2. Unzip the executable files into a new directory.
 3. Run `clarinet --help` to view the available options.
+4. Download [Test.clar](https://github.com/swhitley/CLARiNET/blob/main/Test.clar) to try it out.
 
 ## Loading a CLAR file to Workday
 
