@@ -13,7 +13,7 @@ Here are a few ideas. (Care to add to this list in the discussions?)
 
 ## Installation
 
-1. Download the latest release for your operating system.
+1. Download the [latest release](https://github.com/swhitley/CLARiNET/releases/latest) for your operating system.
 2. Unzip the executable files into a new directory.
 3. Run `clarinet --help` to view the available options.
 
@@ -24,20 +24,24 @@ Here are a few ideas. (Care to add to this list in the discussions?)
 - Run `clarinet --help` to view the available options.
 - Run `clarinet -e` to view the list of Workday environments and the associated numbers.
 
-Run CLARiNET from the command line using the positional parameters:
+### Run CLARiNET from the command line using positional parameters:
 
-%1 Clar File
-%2 Cloud Collection Name
-%3 Workday Environment Number (run `clarinet -e` to see the list of numbers)
-%4 Tenant
-%5 Username
-%6 Password
+* %1 CLAR File<br/>
+* %2 Cloud Collection Name<br/>
+* %3 Workday Environment Number (run `clarinet -e` to see the list of numbers)<br/>
+* %4 Tenant<br/>
+* %5 Username<br/>
+* %6 Password<br/>
 
 Example: `clarinet "C:\example_folder\Test.clar" Test 7 mytenant myusername mypassword`
 
-A prompt will appear if parameters are not included. For example, you may choose to always run the application without supplying the password so that it will be requested.
+The entire list of parameters is not required. Prompts will appear for the parameters that are not included.  These are all valid examples:
 
-Example: `clarinet "C:\example_folder\Test.clar" Test 7 mytenant myusername`
+Example #1: `clarinet "C:\example_folder\Test.clar"`
+
+Example #2: `clarinet "C:\example_folder\Test.clar" Test 7 mytenant myusername`
+
+Example #3: `clarinet "C:\example_folder\Test.clar" Test`
 
 ### Sample `clarinet` Run
 ![image](https://user-images.githubusercontent.com/413552/129465336-0168f0e3-7e75-4309-83e1-8aebe9b9ae6e.png)
