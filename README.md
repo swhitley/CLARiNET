@@ -27,4 +27,7 @@ You can also run CLARiNET by entering `clarinet` by itself.  The application wil
 
 ![image](https://user-images.githubusercontent.com/413552/129465336-0168f0e3-7e75-4309-83e1-8aebe9b9ae6e.png)
 
+## Credits
 
+CLARiNET is compatible with Workday®
+It is not sponsored, affiliated with, or endorsed by Workday.
