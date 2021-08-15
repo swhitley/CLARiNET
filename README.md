@@ -19,12 +19,27 @@ Here are a few ideas. (Care to add to this list in the discussions?)
 
 ## Loading a CLAR file to Workday
 
+- Enter `clarinet` on a line by itself.  The application will prompt for all necessary information.
+- If a single `.clar` file is found in the same directory, CLARiNET will automatically select that file for processing.
+- Run `clarinet --help` to view the available options.
+- Run `clarinet -e` to view the list of Workday environments and the associated numbers.
+
 Run CLARiNET from the command line using the positional parameters:
+
+%1 Clar File
+%2 Cloud Collection Name
+%3 Workday Environment Number (run `clarinet -e` to see the list of numbers)
+%4 Tenant
+%5 Username
+%6 Password
 
 Example: `clarinet "C:\example_folder\Test.clar" Test 7 mytenant myusername mypassword`
 
-You can also run CLARiNET by entering `clarinet` by itself.  The application will prompt for the necessary information.
+A prompt will appear if parameters are not included. For example, you may choose to always run the application without supplying the password so that it will be requested.
 
+Example: `clarinet "C:\example_folder\Test.clar" Test 7 mytenant myusername`
+
+### Sample `clarinet` Run
 ![image](https://user-images.githubusercontent.com/413552/129465336-0168f0e3-7e75-4309-83e1-8aebe9b9ae6e.png)
 
 ## Credits
