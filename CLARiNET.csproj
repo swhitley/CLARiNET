@@ -4,6 +4,9 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <Authors>Whitley Media</Authors>
+    <PackageIcon>CLARiNET.ico</PackageIcon>
+    <PackageIconUrl />
+    <ApplicationIcon>CLARiNET.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
