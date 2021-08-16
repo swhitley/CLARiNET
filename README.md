@@ -1,7 +1,6 @@
-<img align="right" src="https://user-images.githubusercontent.com/413552/129500187-ea5a1947-16d2-46eb-ab48-2adc6553b6d8.png" width="100" />
-
 # CLARiNET
-Load CLAR files without Workday Studio
+<img align="right" src="https://user-images.githubusercontent.com/413552/129500187-ea5a1947-16d2-46eb-ab48-2adc6553b6d8.png" width="50" />
+Load CLAR files without Workday Studio.
 
 ## WHY?
 You might be asking yourself, "Why load a CLAR file from outside of Workday Studio?"
@@ -26,6 +25,8 @@ Here are a few ideas. (Care to add to this list in the discussions?)
 - If a single `.clar` file is found in the same directory, CLARiNET will automatically select that file for processing.
 - Run `clarinet --help` to view the available options.
 - Run `clarinet -e` to view the list of Workday environments and the associated numbers.
+
+**Note:** CLARiNET calls an unpublished Workday API. Functionality is not guaranteed.
 
 ### Run CLARiNET from the command line using positional parameters:
 
