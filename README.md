@@ -53,5 +53,7 @@ Example #3: `clarinet "C:\example_folder\Test.clar" Test`
 
 ## Credits
 
+Command Line Parser - https://github.com/commandlineparser/commandline [(MIT)](https://github.com/commandlineparser/commandline/blob/master/License.md)
+
 CLARiNET is compatible with Workday®
 It is not sponsored, affiliated with, or endorsed by Workday.
