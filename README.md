@@ -1,3 +1,5 @@
+<img align="right" src="https://user-images.githubusercontent.com/413552/129500187-ea5a1947-16d2-46eb-ab48-2adc6553b6d8.png" width="100" />
+
 # CLARiNET
 Load CLAR files without Workday Studio
 
