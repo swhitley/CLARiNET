@@ -1,6 +1,6 @@
 # CLARiNET
 <img align="right" src="https://user-images.githubusercontent.com/413552/129500187-ea5a1947-16d2-46eb-ab48-2adc6553b6d8.png" width="50" />
-Load CLAR files without Workday Studio.
+Deploy Workday Studio Integrations without Workday Studio.
 
 ## WHY?
 You might be asking yourself, "Why load a CLAR file from outside of Workday Studio?"
