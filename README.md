@@ -20,14 +20,14 @@ Here are a few ideas. (Care to add to this list in the discussions?)
 5. You may need to install the [dotnet core runtime](https://dotnet.microsoft.com/download/dotnet/5.0/runtime).
 6. Optional: Download [Test.clar](https://github.com/swhitley/CLARiNET/blob/main/Test.clar) to try it out.
 
+**Note:** CLARiNET calls an unpublished Workday API endpoint. Functionality is not guaranteed.
+
 ## Loading a CLAR file to Workday
 
 - Enter `clarinet` on a line by itself.  The application will prompt for all necessary information.
 - If a single `.clar` file is found in the same directory, CLARiNET will automatically select that file for processing.
 - Run `clarinet --help` to view the available options.
 - Run `clarinet -e` to view the list of Workday environments and the associated numbers.
-
-**Note:** CLARiNET calls an unpublished Workday API. Functionality is not guaranteed.
 
 ### Run CLARiNET from the command line using positional parameters:
 
