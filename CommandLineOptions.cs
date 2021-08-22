@@ -24,10 +24,15 @@ namespace CLARiNET
         [Value(index: 4, MetaName = "Username", Required = false, HelpText = "Username")]
         public string Username { get; set; }
 
-        [Value(index: 5, MetaName = "Password", Required = false, HelpText = "Password")]
+        [Value(index: 5, MetaName = "Password", Required = false, HelpText = "Password (must be encrypted using the -e option)")]
         public string Password { get; set; }
 
-        [Option('e', "environments", Required = false,
+        [Option('e', "encrypt", Required = false,
+          HelpText =
+              "Encrypt a password for use on the command line")]
+        public bool Encrypt { get; set; }
+
+        [Option('w', "wdenvironments", Required = false,
          HelpText =
              "Display the Workday environments and their associated numbers")]
         public bool PrintEnvironments { get; set; }

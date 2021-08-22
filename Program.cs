@@ -33,6 +33,25 @@ namespace CLARiNET
                     return;
                 }
 
+                if (options.Encrypt)
+                {
+                    Console.WriteLine("Enter a password to encrypt:\n");
+                    string pass = PasswordPrompt();
+                    string encPass = "";
+                    try
+                    {
+                        encPass = Crypto.Protect(pass);
+                    }
+                    // Perform a retry
+                    catch
+                    {
+                        encPass = Crypto.Protect(pass);
+                    }
+                    Console.WriteLine("\n\n" + encPass);
+                    Console.WriteLine("\n");
+                    return;
+                }
+
                 if (options.PrintEnvironments)
                 {
                     PrintEnvironments(envs);
@@ -40,7 +59,7 @@ namespace CLARiNET
                 }
 
                 // CLAR file
-                if (options.ClarFile == null)
+                if (String.IsNullOrEmpty(options.ClarFile))
                 {
                     // Check for a single CLAR file in this directory.
                     string[] files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "*.clar");
@@ -58,7 +77,7 @@ namespace CLARiNET
                 }
 
                 // Collection Name
-                if (options.CollectionName == null)
+                if (String.IsNullOrEmpty(options.CollectionName))
                 {
                     Console.WriteLine("Enter the Workday Cloud Collection name:\n");
                     options.CollectionName = Console.ReadLine().Trim();
@@ -66,7 +85,7 @@ namespace CLARiNET
                 }
 
                 // Environment Number
-                if (options.EnvNum == null)
+                if (String.IsNullOrEmpty(options.EnvNum))
                 {
                     do
                     {
@@ -98,7 +117,7 @@ namespace CLARiNET
                 }
 
                 // Tenant
-                if (options.Tenant == null)
+                if (String.IsNullOrEmpty(options.Tenant))
                 {
                     Console.WriteLine("Enter the tenant:\n");
                     options.Tenant = Console.ReadLine().Trim();
@@ -106,7 +125,7 @@ namespace CLARiNET
                 }
 
                 // Username
-                if (options.Username == null)
+                if (String.IsNullOrEmpty(options.Username))
                 {
                     Console.WriteLine("Enter the username:\n");
                     options.Username = Console.ReadLine().Trim();
@@ -114,10 +133,14 @@ namespace CLARiNET
                 }
 
                 // Password
-                if (options.Password == null)
+                if (String.IsNullOrEmpty(options.Password))
                 {
                     Console.WriteLine("Enter the password (will not be displayed):\n");
                     options.Password = PasswordPrompt();
+                }
+                else
+                {
+                    options.Password = Crypto.Unprotect(options.Password);
                 }
 
                 Console.WriteLine("\n\nDeploying the CLAR and awaiting the result...\n\n");
@@ -127,12 +150,22 @@ namespace CLARiNET
                 options.Username = options.Username + "@" + options.Tenant;
                 url = url.Replace("{host}", host) + options.CollectionName;
                 string result = WDWebService.CallRest(options.Tenant, options.Username, options.Password, url, "PUT", bytes);
-                Console.WriteLine("Result:\n");
-                Console.WriteLine(result);
+
+                if (result.IndexOf("<?xml") < 0)
+                {
+                    Console.WriteLine("No XML response detected.  Workday may be unavailable or your parameters are incorrect.");
+                }
+                else
+                {
+                    Console.WriteLine("Result:\n");
+                    Console.WriteLine(result);
+                    Console.WriteLine("\n");
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine("\n\n" + ex.Message);
+                Console.WriteLine("\n");
             }
         }
 

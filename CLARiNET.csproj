@@ -7,11 +7,14 @@
     <PackageIcon>CLARiNET.ico</PackageIcon>
     <PackageIconUrl />
     <ApplicationIcon>CLARiNET.ico</ApplicationIcon>
-    <Version>1.0.2</Version>
+    <Version>1.0.4</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.8.0" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="5.0.9" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
