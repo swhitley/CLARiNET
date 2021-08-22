@@ -27,18 +27,18 @@ Here are a few ideas. (Care to add to this list in the discussions?)
 - Enter `clarinet` on a line by itself.  The application will prompt for all necessary information.
 - If a single `.clar` file is found in the same directory, CLARiNET will automatically select that file for processing.
 - Run `clarinet --help` to view the available options.
-- Run `clarinet -e` to view the list of Workday environments and the associated numbers.
+- Run `clarinet -w` to view the list of Workday environments and the associated numbers.
 
 ### Run CLARiNET from the command line using positional parameters:
 
 * %1 CLAR File<br/>
 * %2 Cloud Collection Name<br/>
-* %3 Workday Environment Number (run `clarinet -e` to see the list of numbers)<br/>
+* %3 Workday Environment Number (run `clarinet -w` to see the list of numbers)<br/>
 * %4 Tenant<br/>
 * %5 Username<br/>
-* %6 Password<br/>
+* %6 Encrypted Password (run `clarinet -e` to encrypt a password) <br/>
 
-Example: `clarinet "C:\example_folder\Test.clar" Test 7 mytenant myusername mypassword`
+Example: `clarinet "C:\example_folder\Test.clar" Test 7 mytenant myusername myencryptedpassword`
 
 The entire list of parameters is not required. Prompts will appear for the parameters that are not included.  These are all valid examples:
 
