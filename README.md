@@ -38,7 +38,7 @@ Here are a few ideas. (Care to add to this list in the discussions?)
 * %5 Username<br/>
 * %6 Encrypted Password (run `clarinet -e` to encrypt a password) <br/>
 
-Example: `clarinet "C:\example_folder\Test.clar" Test 7 mytenant myusername myencryptedpassword`
+Example: `clarinet "C:\example_folder\Test.clar" Test 7 mytenant myusername AQAAANCMnd8BFdERjHoAwE/Cl+...G3Q=`
 
 The entire list of parameters is not required. Prompts will appear for the parameters that are not included.  These are all valid examples:
 
