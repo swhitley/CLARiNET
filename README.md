@@ -1,5 +1,6 @@
 # CLARiNET
-Load CLAR files without Workday Studio
+<img align="right" src="https://user-images.githubusercontent.com/413552/129500187-ea5a1947-16d2-46eb-ab48-2adc6553b6d8.png" width="50" />
+Deploy Workday Studio Integrations without Workday Studio.
 
 ## WHY?
 You might be asking yourself, "Why load a CLAR file from outside of Workday Studio?"
@@ -13,9 +14,13 @@ Here are a few ideas. (Care to add to this list in the discussions?)
 
 ## Installation
 
-1. Download the [latest release](https://github.com/swhitley/CLARiNET/releases/latest) for your operating system.
-2. Unzip the executable files into a new directory.
-3. Run `clarinet --help` to view the available options.
+1. Download the [latest release](https://github.com/swhitley/CLARiNET/releases/latest) for your operating system (Mac or Windows).
+3. Unzip the executable files into a new directory.
+4. Run `clarinet --help` to view the available options.
+5. You may need to install the [dotnet core runtime](https://dotnet.microsoft.com/download/dotnet/5.0/runtime).
+6. Optional: Download [Test.clar](https://github.com/swhitley/CLARiNET/blob/main/Test.clar) to try it out.
+
+**Note:** CLARiNET calls an unpublished Workday API endpoint. Functionality is not guaranteed.
 
 ## Loading a CLAR file to Workday
 
@@ -47,6 +52,8 @@ Example #3: `clarinet "C:\example_folder\Test.clar" Test`
 ![image](https://user-images.githubusercontent.com/413552/129465336-0168f0e3-7e75-4309-83e1-8aebe9b9ae6e.png)
 
 ## Credits
+
+Command Line Parser - https://github.com/commandlineparser/commandline ([MIT](https://github.com/commandlineparser/commandline/blob/master/License.md))
 
 CLARiNET is compatible with Workday®
 It is not sponsored, affiliated with, or endorsed by Workday.
