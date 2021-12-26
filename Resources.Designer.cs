@@ -19,7 +19,7 @@ namespace CLARiNET {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -57,6 +57,42 @@ namespace CLARiNET {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;bsvc:Put_Drive_Document_Content_Request bsvc:version=&quot;v37.0&quot; xmlns:bsvc=&quot;urn:com.workday/bsvc&quot;&gt;
+        ///	&lt;bsvc:Add_Only&gt;true&lt;/bsvc:Add_Only&gt;
+        ///	&lt;bsvc:Drive_Document_Content_Data&gt;
+        ///		&lt;bsvc:Drive_Document_Content_File_Name&gt;{filename}&lt;/bsvc:Drive_Document_Content_File_Name&gt;
+        ///		&lt;bsvc:Workdrive_Item_Generic_Data&gt;
+        ///			&lt;bsvc:Drive_Item_Name&gt;{filename}&lt;/bsvc:Drive_Item_Name&gt;
+        ///			&lt;bsvc:Owned_By_Reference&gt;
+        ///				&lt;bsvc:ID bsvc:type=&quot;WorkdayUserName&quot;&gt;{username}&lt;/bsvc:ID&gt;
+        ///			&lt;/bsvc:Owned [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Put_Drive_Document_Content_Request {
+            get {
+                return ResourceManager.GetString("Put_Drive_Document_Content_Request", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;bsvc:Put_Drive_Document_Content_Request bsvc:version=&quot;v37.0&quot; xmlns:bsvc=&quot;urn:com.workday/bsvc&quot;&gt;
+        ///	&lt;bsvc:Drive_Document_Content_Reference&gt;
+        ///		&lt;bsvc:ID bsvc:type=&quot;WID&quot;&gt;{document_wid}&lt;/bsvc:ID&gt;
+        ///	&lt;/bsvc:Drive_Document_Content_Reference&gt;
+        ///	&lt;bsvc:Drive_Document_Content_Data&gt;
+        ///		&lt;bsvc:Drive_Document_Content_File_Name&gt;{filename}&lt;/bsvc:Drive_Document_Content_File_Name&gt;
+        ///		&lt;bsvc:Workdrive_Item_Generic_Data&gt;
+        ///			&lt;bsvc:Drive_Item_Name&gt;{filename}&lt;/bsvc:Drive_Item_Name&gt;
+        ///			&lt;bsvc [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Put_Drive_Document_Content_Trash_Request {
+            get {
+                return ResourceManager.GetString("Put_Drive_Document_Content_Trash_Request", resourceCulture);
             }
         }
         

@@ -9,23 +9,26 @@ namespace CLARiNET
 {
     public class Options
     {
-        [Value(index: 0,MetaName = "CLAR File", Required = false, HelpText = "Full path and file name for the CLAR")]
-        public string ClarFile { get; set; }
+        [Value(index: 0, MetaName = "Command", Required = false, HelpText = "CLARiNET Commands:\n\nCLAR_UPLOAD\nDRIVE_UPLOAD\nDRIVE_TRASH")]
+        public string Command { get; set; }
 
-        [Value(index: 1, MetaName = "Collection", Required = false, HelpText = "Cloud Collection name")]
-        public string CollectionName { get; set; }
+        [Value(index: 1, MetaName = "File or Directory", Required = false, HelpText = "Path or Path and file name")]
+        public string Path { get; set; }
 
-        [Value(index: 2, MetaName = "Environment Number", Required = false, HelpText = "Number associated with a Workday environment (list all with -e parameter)")]
+        [Value(index: 2, MetaName = "Parameters", Required = false, HelpText = "Parameters for the command (For CLAR_UPLOAD, enter the Cloud Collection)")]
+        public string Parameters { get; set; }
+
+        [Value(index: 3, MetaName = "Environment Number", Required = false, HelpText = "Number associated with a Workday environment (list all with -w parameter)")]
         public string EnvNum { get; set; }
 
-        [Value(index: 3, MetaName = "Tenant", Required = false, HelpText = "Workday Tenant")]
+        [Value(index: 4, MetaName = "Tenant", Required = false, HelpText = "Workday Tenant")]
         public string Tenant { get; set; }
 
-        [Value(index: 4, MetaName = "Username", Required = false, HelpText = "Username")]
+        [Value(index: 5, MetaName = "Username", Required = false, HelpText = "Username")]
         public string Username { get; set; }
 
-        [Value(index: 5, MetaName = "Password", Required = false, HelpText = "Password (must be encrypted using the -e option)")]
-        public string Password { get; set; }
+        [Value(index: 6, MetaName = "Password", Required = false, HelpText = "Password (must be encrypted using the -e option)")]
+        public string Password { get; set; }    
 
         [Option('e', "encrypt", Required = false,
           HelpText =
