@@ -9,7 +9,7 @@ Compatibility: Windows or Mac
 - Upload files in bulk to Workday Drive. Load files for different Workday user accounts.
 - Send files to the Workday Drive Trash.
 
-## Why deploy CLAR files with CLARiNET?
+## CLAR Deployment: Why deploy CLAR files with CLARiNET?
 You might be asking yourself, "Why load a CLAR file from outside of Workday Studio?"
 
 - Distribute an integration to someone who is not a developer.
