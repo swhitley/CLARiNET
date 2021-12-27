@@ -5,7 +5,7 @@ A Workday command-line interface (CLI) for working with Drive files and deployin
 
 Compatibility: Windows or Mac
 
-## Drive Features
+## Workday Drive Features
 - Upload files in bulk to Workday Drive. Load files for different Workday user accounts.
 - Send files to the Workday Drive Trash.
 
