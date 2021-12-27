@@ -31,7 +31,7 @@ You might be asking yourself, "Why load a CLAR file from outside of Workday Stud
 
 ## Uploading files to Workday Drive
 
-- Domains: Ensure you have enabled `Modify` access on Report/Task and Integration permissions for the following domains in Workday:
+- Domains: Ensure you have enabled `Modify` access on `Report/Task` and `Integration` permissions for the following domains in Workday:
     - Drive Administrator
     - Drive Web Services
 - Ensure that a directory named `inbound` has been created alongside the `clarinet` program file.  The directory will be created automatically when `clarinet` is executed.
