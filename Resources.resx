@@ -126,12 +126,12 @@
 		&lt;bsvc:Workdrive_Item_Generic_Data&gt;
 			&lt;bsvc:Drive_Item_Name&gt;{filename}&lt;/bsvc:Drive_Item_Name&gt;
 			&lt;bsvc:Owned_By_Reference&gt;
-				&lt;bsvc:ID bsvc:type="WorkdayUserName"&gt;{username}&lt;/bsvc:ID&gt;
+				&lt;bsvc:ID bsvc:type="WorkdayUserName"&gt;{owned_by_username}&lt;/bsvc:ID&gt;
 			&lt;/bsvc:Owned_By_Reference&gt;
 		&lt;/bsvc:Workdrive_Item_Generic_Data&gt;
 		&lt;bsvc:File&gt;{contents}&lt;/bsvc:File&gt;
 		&lt;bsvc:Drive_File_Uploaded_By_Reference&gt;
-			&lt;bsvc:ID bsvc:type="WorkdayUserName"&gt;{username}&lt;/bsvc:ID&gt;
+			&lt;bsvc:ID bsvc:type="WorkdayUserName"&gt;{uploaded_by_username}&lt;/bsvc:ID&gt;
 		&lt;/bsvc:Drive_File_Uploaded_By_Reference&gt;
 	&lt;/bsvc:Drive_Document_Content_Data&gt;
 &lt;/bsvc:Put_Drive_Document_Content_Request&gt;</value>
@@ -148,11 +148,11 @@
 			&lt;bsvc:Drive_Item_Name&gt;{filename}&lt;/bsvc:Drive_Item_Name&gt;
 			&lt;bsvc:Trashed&gt;true&lt;/bsvc:Trashed&gt;
 			&lt;bsvc:Owned_By_Reference&gt;
-				&lt;bsvc:ID bsvc:type="WorkdayUserName"&gt;{username}&lt;/bsvc:ID&gt;
+				&lt;bsvc:ID bsvc:type="WorkdayUserName"&gt;{owned_by_username}&lt;/bsvc:ID&gt;
 			&lt;/bsvc:Owned_By_Reference&gt;
 		&lt;/bsvc:Workdrive_Item_Generic_Data&gt;		
 		&lt;bsvc:Drive_File_Uploaded_By_Reference&gt;
-			&lt;bsvc:ID bsvc:type="WorkdayUserName"&gt;{username}&lt;/bsvc:ID&gt;
+			&lt;bsvc:ID bsvc:type="WorkdayUserName"&gt;{uploaded_by_username}&lt;/bsvc:ID&gt;
 		&lt;/bsvc:Drive_File_Uploaded_By_Reference&gt;
 	&lt;/bsvc:Drive_Document_Content_Data&gt;
 &lt;/bsvc:Put_Drive_Document_Content_Request&gt;</value>

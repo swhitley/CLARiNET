@@ -9,7 +9,7 @@ namespace CLARiNET
 {
     internal class DriveApi
     {
-        public static string BuildSoapRequest(string file, string contents, bool trashed)
+        public static string BuildSoapRequest(string file, string contents, string uploadedBy, bool trashed)
         {
             string xmlData = "";
             string delimiter = "~";
@@ -47,7 +47,12 @@ namespace CLARiNET
                 xmlData = xmlData.Replace("{contents}", contents)
                     .Replace("{document_wid}", wid)
                     .Replace("{filename}", filename)
-                    .Replace("{username}", username);
+                    .Replace("{owned_by_username}", username)
+                    .Replace("{uploaded_by_username}", username);
+            }
+            else
+            {
+                throw new Exception("Could not parse file name or read input line.");
             }
 
             return xmlData;

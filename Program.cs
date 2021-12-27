@@ -70,8 +70,7 @@ namespace CLARiNET
                 }
 
                 // API Call
-                string result = "";
-                options.Username = options.Username + "@" + options.Tenant;
+                string result = "";         
                 restUrl = cloudRepoUrl.Replace("{host}", host) + cloudCollection;
                 soapUrl = soapUrl.Replace("{tenant}", options.Tenant).Replace("{version}", "v37.0");
 
@@ -94,26 +93,29 @@ namespace CLARiNET
                         case Command.CLAR_UPLOAD:
                             bytes = File.ReadAllBytes(file);
                             Console.WriteLine("\n\nDeploying the CLAR and awaiting the result...\n\n");
-                            result = WDWebService.CallRest(options.Tenant, options.Username, options.Password, restUrl, "PUT", bytes);
+                            result = WDWebService.CallRest(options.Tenant, options.Username + "@" + options.Tenant, options.Password, restUrl, "PUT", bytes);
                             break;
                         case Command.DRIVE_UPLOAD:
                             bytes = File.ReadAllBytes(file);
-                            result = DriveUpload(file, bytes, soapUrl);
+                            result = DriveUpload(file, bytes, soapUrl, options.Username);
                             break;
                         case Command.DRIVE_TRASH:
-                            result = DriveTrash(file, soapUrl);
+                            result = DriveTrash(file, soapUrl, options.Username);
                             break;
                     }
 
-                    if (result.IndexOf("<?xml") < 0 && result.IndexOf("<SOAP") < 0)
+                    if (result.ToLower().IndexOf("<html") >= 0)
                     {
                         Console.WriteLine("No XML response detected.  Workday may be unavailable or your parameters are incorrect.");
                     }
                     else
                     {
-                        Console.WriteLine("Result for " + file + "\n");
-                        Console.WriteLine(result);
-                        Console.WriteLine("\n\n");
+                        if (!String.IsNullOrEmpty(result))
+                        {
+                            Console.WriteLine("Result for " + file + "\n");
+                            Console.WriteLine(result);
+                            Console.WriteLine("\n\n");
+                        }
                     }
                 }
             }
@@ -436,7 +438,7 @@ namespace CLARiNET
             return soapUrl;
         }
 
-        static string DriveUpload(string file, byte[] bytes, string soapUrl)
+        static string DriveUpload(string file, byte[] bytes, string soapUrl, string uploadedBy)
         {
             string result = "";
             try
@@ -445,8 +447,8 @@ namespace CLARiNET
                 {
                     Console.WriteLine("\n\nUploading " + file + " to Drive and awaiting the result...\n\n");
                     string fileContents = Convert.ToBase64String(bytes);
-                    string xmlData = DriveApi.BuildSoapRequest(file, fileContents, false);
-                    result = WDWebService.CallAPI(options.Username, options.Password, soapUrl, xmlData);
+                    string xmlData = DriveApi.BuildSoapRequest(file, fileContents, uploadedBy, false);
+                    result = WDWebService.CallAPI(options.Username + "@" + options.Tenant, options.Password, soapUrl, xmlData);
                     if (result.IndexOf("<?xml") == 0)
                     {
                         string processedFile = Path.Combine(processedDir, Path.GetFileName(file));
@@ -469,7 +471,7 @@ namespace CLARiNET
             return result;
         }
 
-        static string DriveTrash(string file, string soapUrl)
+        static string DriveTrash(string file, string soapUrl, string uploadedBy)
         {
             string result = "";
             try
@@ -477,8 +479,8 @@ namespace CLARiNET
                 if (file.Trim().Length > 0)
                 {
                     Console.WriteLine("\n\nTrashing " + file + " in Drive and awaiting the result...\n\n");
-                    string xmlData = DriveApi.BuildSoapRequest(file, "", true);
-                    result = WDWebService.CallAPI(options.Username, options.Password, soapUrl, xmlData);
+                    string xmlData = DriveApi.BuildSoapRequest(file, "", uploadedBy, true);
+                    result = WDWebService.CallAPI(options.Username + "@" + options.Tenant, options.Password, soapUrl, xmlData);
                 }
             }
             catch (Exception ex)

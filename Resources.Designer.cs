@@ -69,8 +69,8 @@ namespace CLARiNET {
         ///		&lt;bsvc:Workdrive_Item_Generic_Data&gt;
         ///			&lt;bsvc:Drive_Item_Name&gt;{filename}&lt;/bsvc:Drive_Item_Name&gt;
         ///			&lt;bsvc:Owned_By_Reference&gt;
-        ///				&lt;bsvc:ID bsvc:type=&quot;WorkdayUserName&quot;&gt;{username}&lt;/bsvc:ID&gt;
-        ///			&lt;/bsvc:Owned [rest of string was truncated]&quot;;.
+        ///				&lt;bsvc:ID bsvc:type=&quot;WorkdayUserName&quot;&gt;{owned_by_username}&lt;/bsvc:ID&gt;
+        ///			&lt;/b [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string Put_Drive_Document_Content_Request {
             get {
