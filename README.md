@@ -25,9 +25,11 @@ You might be asking yourself, "Why load a CLAR file from outside of Workday Stud
 5. You may need to install the [dotnet core runtime](https://dotnet.microsoft.com/download/dotnet/5.0/runtime).
 6. Optional: Download [Test.clar](https://github.com/swhitley/CLARiNET/blob/main/Test.clar) to try it out.
 
-**Note:** 
+**Notes:** 
 - When uploading CLAR files, CLARiNET calls an unpublished Workday API endpoint. Functionality is not guaranteed.  
 - The Drive API is published and fully-supported by Workday.
+- On a Mac, you will be blocked from executing CLARiNET by an "Unidentified Developer" warning.  Use Ctrl-Click or right-click to open CLARiNET.
+    - https://www.macworld.co.uk/how-to/mac-app-unidentified-developer-3669596/ 
 
 ## Uploading files to Workday Drive
 
