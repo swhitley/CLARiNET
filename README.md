@@ -1,11 +1,14 @@
 # CLARiNET
 <img align="right" src="https://user-images.githubusercontent.com/413552/129500187-ea5a1947-16d2-46eb-ab48-2adc6553b6d8.png" width="50" />
-Deploy Workday Studio Integrations without Workday Studio.
 
-## WHY?
+A Workday command-line interface (CLI) for working with Drive files and deploying Workday Studio integrations without Workday Studio.
+
+## Drive Features
+- Upload files in bulk to Workday Drive. Load files for different Workday user accounts.
+- Send files to the Workday Drive Trash.
+
+## Why deploy CLAR files with CLARiNET?
 You might be asking yourself, "Why load a CLAR file from outside of Workday Studio?"
-
-Here are a few ideas. (Care to add to this list in the discussions?)
 
 - Distribute an integration to someone who is not a developer.
 - Enable an operations role to move an integration to production without requiring development tools.
@@ -20,33 +23,57 @@ Here are a few ideas. (Care to add to this list in the discussions?)
 5. You may need to install the [dotnet core runtime](https://dotnet.microsoft.com/download/dotnet/5.0/runtime).
 6. Optional: Download [Test.clar](https://github.com/swhitley/CLARiNET/blob/main/Test.clar) to try it out.
 
-**Note:** CLARiNET calls an unpublished Workday API endpoint. Functionality is not guaranteed.
+**Note:** When uploading CLAR files, CLARiNET calls an unpublished Workday API endpoint. Functionality is not guaranteed.  
+The Drive API is published and fully-supported by Workday.
+
+## Uploading files to Workday Drive
+
+- Ensure that a directory named `inbound` has been created alongside the `clarinet` program file.  The directory will be created automatically when `clarinet` is executed.
+- Place each file in the inbound directory with the following file name format:   {Workday User Account}\~{File Name}<br/>
+  Example:  swhitley\~MyExampleFile.txt
+- Enter `clarinet` on a line by itself.  The application will prompt for all necessary information.
+- The `clarinet` command is **DRIVE_UPLOAD**.
+- Each file in the `inbound` directory will be uploaded to the drive for the appropriate Workday user account.  The user account will be removed from the file name and the {File Name} will appear in Drive.
+- Once uploaded successfully, each file will be moved to the `processed` directory.
+
+## Sending Drive files to the Trash
+- Create a comma-separated value (CSV) file with the following layout:<br/>
+    {Workday User Account},{File Name},{Drive Document Workday ID (WID)}<br/>
+    Example:  swhitley,MyExampleFile.txt,8a8a350990e401003bb7a37564c10000
+- Place the file in the same folder as the `clarinet` application.
+- When naming the file, it will be convenient to include the word **trash**.
+- Enter `clarinet` on a line by itself.  The application will prompt for all necessary information.
+- The `clarinet` command is **DRIVE_TRASH**.
+
+Please note that a file is not deleted when sent to the trash.  Files can be individually restored from the trash if needed.
 
 ## Loading a CLAR file to Workday
 
 - Enter `clarinet` on a line by itself.  The application will prompt for all necessary information.
+- The `clarinet` command is **CLAR_UPLOAD**.
 - If a single `.clar` file is found in the same directory, CLARiNET will automatically select that file for processing.
 - Run `clarinet --help` to view the available options.
 - Run `clarinet -w` to view the list of Workday environments and the associated numbers.
 
-### Run CLARiNET from the command line using positional parameters:
+## Run CLARiNET from the command line using positional parameters:
 
-* %1 CLAR File<br/>
-* %2 Cloud Collection Name<br/>
-* %3 Workday Environment Number (run `clarinet -w` to see the list of numbers)<br/>
-* %4 Tenant<br/>
-* %5 Username<br/>
-* %6 Encrypted Password (run `clarinet -e` to encrypt a password) <br/>
+* %1 CLARiNET Command:  CLAR_UPLOAD, DRIVE_UPLOAD, DRIVE_TRASH<br/>
+* %2 Path or Path and File Name<br/>
+* %3 Parameters for the command.  Enter the **Cloud Collection** name when performing a **CLAR_UPLOAD**.  For other commands, defaults will be used<br/>
+* %4 Workday Environment Number (run `clarinet -w` to see the list of numbers)<br/>
+* %5 Tenant<br/>
+* %6 Username<br/>
+* %7 Encrypted Password (run `clarinet -e` to encrypt a password) <br/>
 
-Example: `clarinet "C:\example_folder\Test.clar" Test 7 mytenant myusername AQAAANCMnd8BFdERjHoAwE/Cl+...G3Q=`
+Example: `clarinet CLAR_UPLOAD "C:\example_folder\Test.clar" Test 7 mytenant myusername AQAAANCMnd8BFdERjHoAwE/Cl+...G3Q=`
 
 The entire list of parameters is not required. Prompts will appear for the parameters that are not included.  These are all valid examples:
 
-Example #1: `clarinet "C:\example_folder\Test.clar"`
+Example #1: `clarinet CLAR_UPLOAD "C:\example_folder\Test.clar"`
 
-Example #2: `clarinet "C:\example_folder\Test.clar" Test 7 mytenant myusername`
+Example #2: `clarinet CLAR_UPLOAD "C:\example_folder\Test.clar" Test 7 mytenant myusername`
 
-Example #3: `clarinet "C:\example_folder\Test.clar" Test`
+Example #3: `clarinet CLAR_UPLOAD "C:\example_folder\Test.clar" Test`
 
 ### Sample `clarinet` Run
 ![image](https://user-images.githubusercontent.com/413552/129465336-0168f0e3-7e75-4309-83e1-8aebe9b9ae6e.png)
