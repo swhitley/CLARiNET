@@ -3,7 +3,7 @@
 
 A Workday command-line interface (CLI) for working with Drive files and deploying Workday Studio integrations without Workday Studio.
 
-Compatibility: Windows or Mac
+Windows or Mac
 
 ## Workday Drive Features
 - Upload files in bulk to Workday Drive. Load files for different Workday user accounts.
@@ -25,23 +25,28 @@ You might be asking yourself, "Why load a CLAR file from outside of Workday Stud
 5. You may need to install the [dotnet core runtime](https://dotnet.microsoft.com/download/dotnet/5.0/runtime).
 6. Optional: Download [Test.clar](https://github.com/swhitley/CLARiNET/blob/main/Test.clar) to try it out.
 
-**Note:** When uploading CLAR files, CLARiNET calls an unpublished Workday API endpoint. Functionality is not guaranteed.  
-The Drive API is published and fully-supported by Workday.
+**Note:** 
+- When uploading CLAR files, CLARiNET calls an unpublished Workday API endpoint. Functionality is not guaranteed.  
+- The Drive API is published and fully-supported by Workday.
 
 ## Uploading files to Workday Drive
 
+- Domains: Ensure you have enabled `Modify` access on Report/Task and Integration permissions for the following domains in Workday:
+    - Drive Administrator
+    - Drive Web Services
 - Ensure that a directory named `inbound` has been created alongside the `clarinet` program file.  The directory will be created automatically when `clarinet` is executed.
 - Place each file in the inbound directory with the following file name format:   {Workday User Account}\~{File Name}<br/>
   Example:  swhitley\~MyExampleFile.txt
 - Enter `clarinet` on a line by itself.  The application will prompt for all necessary information.
 - The `clarinet` command is **DRIVE_UPLOAD**.
-- Each file in the `inbound` directory will be uploaded to the drive for the appropriate Workday user account.  The user account will be removed from the file name and the {File Name} will appear in Drive.
+- Each file in the `inbound` directory will be uploaded to the drive for the appropriate Workday user account.  The file name in Workday Drive will only show the text following the tilde (\~).
 - Once uploaded successfully, each file will be moved to the `processed` directory.
 
 ## Sending Drive files to the Trash
 - Create a comma-separated value (CSV) file with the following layout:<br/>
-    {Workday User Account},{File Name},{Drive Document Workday ID (WID)}<br/>
+    {Workday User Account (Owned By)},{File Name},{Drive Document Workday ID (WID)}<br/>
     Example:  swhitley,MyExampleFile.txt,8a8a350990e401003bb7a37564c10000
+- In the file, use the Workday account of the original file owner, or it will be changed during this operation.
 - Place the file in the same folder as the `clarinet` application.
 - When naming the file, it will be convenient to include the word **trash**.
 - Enter `clarinet` on a line by itself.  The application will prompt for all necessary information.
@@ -59,7 +64,7 @@ Please note that a file is not deleted when sent to the trash.  Files can be ind
 
 ## Run CLARiNET from the command line using positional parameters:
 
-* %1 CLARiNET Command:  CLAR_UPLOAD, DRIVE_UPLOAD, DRIVE_TRASH<br/>
+* %1 CLARiNET Command:  `CLAR_UPLOAD`, `DRIVE_UPLOAD`, `DRIVE_TRASH`<br/>
 * %2 Path or Path and File Name<br/>
 * %3 Parameters for the command.  Enter the **Cloud Collection** name when performing a **CLAR_UPLOAD**.  For other commands, defaults will be used<br/>
 * %4 Workday Environment Number (run `clarinet -w` to see the list of numbers)<br/>
