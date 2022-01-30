@@ -12,7 +12,7 @@ namespace CLARiNET
 {
     public class WDWebService
     {
-        public static string CallRest(string tenant, string username, string password, string url, string method, byte[] data)
+        public static byte[] CallRest(string tenant, string username, string password, string url, string method, byte[] data)
         {
             using (var webClient = new WebClient())
             {
@@ -24,10 +24,17 @@ namespace CLARiNET
                     webClient.Credentials = new NetworkCredential(username, password);
                     webClient.Headers.Add("X-Originator", "CLARiNET");
                     webClient.Headers.Add("X-Tenant", tenant);
-                    return Encoding.Default.GetString(webClient.UploadData(url, data));
+                    if (method == WebRequestMethods.Http.Get)
+                    {
+                        return webClient.DownloadData(url);
+                    }
+                    else
+                    {
+                        return webClient.UploadData(url, data);
+                    }
                 }
             }
-            return "";
+            return null;
         }
 
         public static string WrapSOAP(string username, string password, string xmlBody)

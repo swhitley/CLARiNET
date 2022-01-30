@@ -9,6 +9,7 @@ namespace CLARiNET
     public struct Command
     {
         public const string CLAR_UPLOAD = "CLAR_UPLOAD";
+        public const string CLAR_DOWNLOAD = "CLAR_DOWNLOAD";
         public const string DRIVE_UPLOAD = "DRIVE_UPLOAD";
         public const string DRIVE_TRASH = "DRIVE_TRASH";
         public const string DRIVE_DOWNLOAD = "DRIVE_DOWNLOAD";

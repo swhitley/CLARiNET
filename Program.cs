@@ -4,6 +4,10 @@ using System.Xml.Linq;
 using System.IO;
 using CommandLine;
 using System.Reflection;
+using System.Net;
+using System.Text;
+using System.Xml.XPath;
+using System.Xml;
 
 namespace CLARiNET
 {
@@ -56,16 +60,15 @@ namespace CLARiNET
                 // Option UI
                 OptionsUI();
 
+                // Post Init and UI Option Handling
                 switch (options.Command)
                 {
                     case Command.CLAR_UPLOAD:
-                        cloudCollection = options.Parameters; 
+                    case Command.CLAR_DOWNLOAD:
                         break;
                     case Command.DRIVE_UPLOAD:
-                        soapUrl = SoapUrlBuild();
-                        break;
                     case Command.DRIVE_TRASH:
-                        soapUrl = SoapUrlBuild();
+                        soapUrl = SoapUrlBuild(options.Command);
                         break;
                 }
 
@@ -76,12 +79,20 @@ namespace CLARiNET
 
                 files = Directory.GetFiles(options.Path, searchPattern, new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive });
 
-                if (options.Command == Command.DRIVE_TRASH)
-                {
-                    if (files.Length > 0)
-                    {
-                        files = File.ReadAllLines(files[0]);
-                    }
+                // Special file handling
+                switch (options.Command)
+                {          
+                    case Command.CLAR_DOWNLOAD:
+                        files = new string[] { Path.Combine(options.Path, options.Parameters + "." + DateTime.Now.ToString("s").Replace(":", ".") + ".clar") };                   
+                        break;
+                    case Command.DRIVE_TRASH:
+                        if (files.Length > 0)
+                        {
+                            files = File.ReadAllLines(files[0]);
+                        }
+                        break;
+                    default:
+                        break;
                 }
 
                 foreach (string file in files)
@@ -93,7 +104,18 @@ namespace CLARiNET
                         case Command.CLAR_UPLOAD:
                             bytes = File.ReadAllBytes(file);
                             Console.WriteLine("\n\nDeploying the CLAR and awaiting the result...\n\n");
-                            result = WDWebService.CallRest(options.Tenant, options.Username + "@" + options.Tenant, options.Password, restUrl, "PUT", bytes);
+                            result = Encoding.Default.GetString(WDWebService.CallRest(options.Tenant, options.Username + "@" + options.Tenant, options.Password, restUrl, WebRequestMethods.Http.Put, bytes));
+                            break;
+                        case Command.CLAR_DOWNLOAD:
+                            Console.WriteLine("\n\nDownloading the CLAR and awaiting the result...\n\n");
+                            bytes = WDWebService.CallRest(options.Tenant, options.Username + "@" + options.Tenant, options.Password, restUrl + "?fmt=clar", WebRequestMethods.Http.Get, null);
+                            File.WriteAllBytes(file, bytes);
+                            result = Encoding.Default.GetString(WDWebService.CallRest(options.Tenant, options.Username + "@" + options.Tenant, options.Password, restUrl, WebRequestMethods.Http.Get, null));
+                            File.WriteAllText(file.Replace(".clar", ".xml"), result);
+                            XDocument xDoc = XDocument.Parse(result);
+                            XmlNamespaceManager xnm = new XmlNamespaceManager(new NameTable());
+                            xnm.AddNamespace("default", "urn:com.workday/esb/cloud/10.0");
+                            result = "Last Uploaded to Workday: " + DateTime.Parse(xDoc.XPathSelectElement("//default:deployed-since", xnm).Value).ToLocalTime().ToString("s");
                             break;
                         case Command.DRIVE_UPLOAD:
                             bytes = File.ReadAllBytes(file);
@@ -222,13 +244,25 @@ namespace CLARiNET
                 options.Command = options.Command.Trim().ToUpper();
             }
 
-            // Set search pattern if parameters are included.
+            // Set search pattern and cloud collection if parameters are included.
             if (options != null && options.Parameters != null)
             {
-                if (options.Command != Command.CLAR_UPLOAD)
+                switch (options.Command)
                 {
-                    searchPattern = options.Parameters;
-                }
+                    case Command.CLAR_UPLOAD:
+                    case Command.CLAR_DOWNLOAD:
+                        cloudCollection = options.Parameters;
+                        if (options.Command == Command.CLAR_DOWNLOAD)
+                        {
+                            searchPattern = "";
+                            options.Parameters = Path.GetFileName(Path.TrimEndingDirectorySeparator(options.Parameters));
+                        }
+                        break;
+                    case Command.DRIVE_UPLOAD:
+                    case Command.DRIVE_TRASH:
+                        searchPattern = options.Parameters;
+                        break;
+                }                
             }
 
             return true;
@@ -282,9 +316,10 @@ namespace CLARiNET
                 // Check for valid commands
                 switch (options.Command)
                 {
-                    case Command.DRIVE_UPLOAD:
-                    case Command.DRIVE_TRASH:
                     case Command.CLAR_UPLOAD:
+                    case Command.CLAR_DOWNLOAD:
+                    case Command.DRIVE_UPLOAD:                    
+                    case Command.DRIVE_TRASH:                    
                         break;
                     default:
                         throw new Exception("Invalid command. Please use --help for a list of valid commands.");
@@ -301,6 +336,7 @@ namespace CLARiNET
                 switch (options.Command)
                 {
                     case Command.CLAR_UPLOAD:
+                    case Command.CLAR_DOWNLOAD:
                         options.Path = appDir;
                         break;
                     case Command.DRIVE_UPLOAD:
@@ -321,11 +357,16 @@ namespace CLARiNET
                 switch (options.Command)
                 {
                     case Command.CLAR_UPLOAD:
+                    case Command.CLAR_DOWNLOAD:
                         Console.WriteLine("Enter the Cloud Collection:\n");
                         cloudCollection = Console.ReadLine().Trim();
-                        Console.WriteLine("");                        
+                        Console.WriteLine("");
                         options.Parameters = cloudCollection;
                         searchPattern = "*.clar";
+                        if (options.Command == Command.CLAR_DOWNLOAD)
+                        {
+                            searchPattern = "";
+                        }
                         break;
                     case Command.DRIVE_UPLOAD:
                         options.Parameters = "*.*";
@@ -337,6 +378,7 @@ namespace CLARiNET
                         break;
                 }
             }
+     
             Console.WriteLine("Using parameters: " + options.Parameters + "\n");
         }
 
@@ -357,7 +399,17 @@ namespace CLARiNET
             }
             else
             {
-                throw new Exception("No files found.");
+                if (options.Command == Command.CLAR_DOWNLOAD)
+                {
+                    if (!Directory.Exists(options.Path))
+                    {
+                        throw new Exception("Directory does not exist.");
+                    }
+                }
+                else
+                {
+                    throw new Exception("No files found.");
+                }
             }
         }
 
@@ -430,11 +482,18 @@ namespace CLARiNET
             }
         }
 
-        static string SoapUrlBuild()
+        static string SoapUrlBuild(string command)
         {
             string soapUrl = ccxUrl.Replace("{host}", host);
             soapUrl = WDWebService.GetServiceURL(soapUrl, options.Tenant, options.Username, options.Password);
-            soapUrl += "/{tenant}/Drive/{version}";
+            switch (options.Command)
+            {
+                case Command.DRIVE_UPLOAD:
+                case Command.DRIVE_TRASH:
+                    soapUrl += "/{tenant}/Drive/{version}";
+                    break;
+            }
+            
             return soapUrl;
         }
 

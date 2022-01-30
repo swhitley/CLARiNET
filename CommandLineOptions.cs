@@ -9,13 +9,13 @@ namespace CLARiNET
 {
     public class Options
     {
-        [Value(index: 0, MetaName = "Command", Required = false, HelpText = "CLARiNET Commands:\n\nCLAR_UPLOAD\nDRIVE_UPLOAD\nDRIVE_TRASH")]
+        [Value(index: 0, MetaName = "Command", Required = false, HelpText = "CLARiNET Commands:\n\nCLAR_UPLOAD\nCLAR_DOWNLOAD\nDRIVE_UPLOAD\nDRIVE_TRASH")]
         public string Command { get; set; }
 
         [Value(index: 1, MetaName = "File or Directory", Required = false, HelpText = "Path or Path and file name")]
         public string Path { get; set; }
 
-        [Value(index: 2, MetaName = "Parameters", Required = false, HelpText = "Parameters for the command (For CLAR_UPLOAD, enter the Cloud Collection)")]
+        [Value(index: 2, MetaName = "Parameters", Required = false, HelpText = "Parameters for the command (For CLAR_UPLOAD and CLAR_DOWNLOAD, enter the Cloud Collection)")]
         public string Parameters { get; set; }
 
         [Value(index: 3, MetaName = "Environment Number", Required = false, HelpText = "Number associated with a Workday environment (list all with -w parameter)")]
