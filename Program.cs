@@ -250,13 +250,13 @@ namespace CLARiNET
                 switch (options.Command)
                 {
                     case Command.CLAR_UPLOAD:
-                    case Command.CLAR_DOWNLOAD:
-                        cloudCollection = options.Parameters;
+                    case Command.CLAR_DOWNLOAD:                        
                         if (options.Command == Command.CLAR_DOWNLOAD)
                         {
                             searchPattern = "";
                             options.Parameters = Path.GetFileName(Path.TrimEndingDirectorySeparator(options.Parameters));
                         }
+                        cloudCollection = options.Parameters;
                         break;
                     case Command.DRIVE_UPLOAD:
                     case Command.DRIVE_TRASH:
