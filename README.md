@@ -111,10 +111,23 @@ CLARiNET can be run from within Workday Studio. The External Tools feature of Wo
 3. Select *Program*. Click *New launch configuration* (icon in the farthest left position of the External Tools dialog box).
 4. Give the configuration a name. Example: "CLARiNET Production Backup"
 5. For my setup, I placed the CLARiNET executable in my Workday workspace directory.
-6. Select an executable in the Location field. Example: ${workspace_loc}\CLARiNET.exe (`${workspace_loc}` is an external tools variable that will convert to the workspace directory when run.)
-7. Set the Working Directory. Example: ${workspace_loc}
-8. Set the Arguments. Example: CLAR_DOWNLOAD "" "${project_loc}" {environment number} {tenant name} {username} {encrypted password} 
-    `${project_loc}` is an external tools variable that will convert to the project directory. CLARiNET will use the last directory name of the project path as the `Cloud Collection`.
+6. Select an executable in the Location field. 
+        
+        Example 1: ${workspace_loc}\CLARiNET.exe 
+        ${workspace_loc} is an external tools variable that will convert to the workspace directory when run.
+        
+        Example 2: C:\CLARiNET\CLARiNET.exe 
+7. Set the Working Directory. 
+        
+        Example 1: ${workspace_loc}
+        
+        Example 2: C:\CLARiNET
+8. Set the Arguments. 
+        
+        Example: CLAR_DOWNLOAD "" "${project_loc}" {environment number} {tenant name} {username} {encrypted password} 
+        ${project_loc} is an external tools variable that will convert to the project directory. 
+        
+        CLARiNET will use the last directory name of the project path as the `Cloud Collection`.
 
 - Run CLARiNET with the "-w" parameter to get the environment number.
 - Run CLARiNET with the "-e" parameter to generate an encrypted password.
