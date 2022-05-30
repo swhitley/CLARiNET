@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Authors>Whitley Media</Authors>
     <PackageIcon>CLARiNET.ico</PackageIcon>
     <PackageIconUrl />
     <ApplicationIcon>CLARiNET.ico</ApplicationIcon>
-    <Version>1.0.9</Version>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

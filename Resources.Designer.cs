@@ -62,6 +62,20 @@ namespace CLARiNET {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;bsvc:Get_Worker_Photos_Request bsvc:version=&quot;v37.0&quot; xmlns:bsvc=&quot;urn:com.workday/bsvc&quot;&gt;
+        ///  &lt;bsvc:Request_References bsvc:Skip_Non_Existing_Instances=&quot;true&quot; bsvc:Ignore_Invalid_References=&quot;true&quot;&gt;
+        ///   {worker_references}
+        ///  &lt;/bsvc:Request_References&gt;
+        ///&lt;/bsvc:Get_Worker_Photos_Request&gt;.
+        /// </summary>
+        internal static string Get_Worker_Photos_Request {
+            get {
+                return ResourceManager.GetString("Get_Worker_Photos_Request", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
         ///&lt;bsvc:Put_Drive_Document_Content_Request bsvc:version=&quot;v37.0&quot; xmlns:bsvc=&quot;urn:com.workday/bsvc&quot;&gt;
         ///	&lt;bsvc:Add_Only&gt;true&lt;/bsvc:Add_Only&gt;
         ///	&lt;bsvc:Drive_Document_Content_Data&gt;
@@ -97,6 +111,25 @@ namespace CLARiNET {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;bsvc:Put_Worker_Document_Request bsvc:Add_Only=&quot;false&quot; bsvc:version=&quot;v37.0&quot; xmlns:bsvc=&quot;urn:com.workday/bsvc&quot;&gt;
+        ///	&lt;bsvc:Worker_Document_Data&gt;
+        ///		&lt;bsvc:Filename&gt;{filename}&lt;/bsvc:Filename&gt;
+        ///		&lt;bsvc:Comment&gt;{comment}&lt;/bsvc:Comment&gt;
+        ///		&lt;bsvc:File&gt;{filedata}&lt;/bsvc:File&gt;
+        ///		&lt;bsvc:Document_Category_Reference&gt;
+        ///			&lt;bsvc:ID bsvc:type=&quot;Document_Category_ID&quot;&gt;{documentCategory}&lt;/bsvc:ID&gt;
+        ///		&lt;/bsvc:Document_Category_Reference&gt;
+        ///		&lt;bsvc:Worker_Reference&gt;
+        ///			&lt;bsvc:ID bsvc:type=&quot;{wo [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Put_Worker_Document_Request {
+            get {
+                return ResourceManager.GetString("Put_Worker_Document_Request", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
         ///&lt;envs&gt;
         ///  &lt;env name=&quot;Production (Ashburn)&quot; type=&quot;prod&quot;&gt;
@@ -116,6 +149,17 @@ namespace CLARiNET {
         internal static string WDEnvironments {
             get {
                 return ResourceManager.GetString("WDEnvironments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;bsvc:Worker_Reference&gt;
+        ///		&lt;bsvc:ID bsvc:type=&quot;{id_type}&quot;&gt;{id}&lt;/bsvc:ID&gt;
+        ///	&lt;/bsvc:Worker_Reference&gt;.
+        /// </summary>
+        internal static string Worker_Reference {
+            get {
+                return ResourceManager.GetString("Worker_Reference", resourceCulture);
             }
         }
     }

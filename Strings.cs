@@ -12,6 +12,7 @@ namespace CLARiNET
         public const string CLAR_DOWNLOAD = "CLAR_DOWNLOAD";
         public const string DRIVE_UPLOAD = "DRIVE_UPLOAD";
         public const string DRIVE_TRASH = "DRIVE_TRASH";
-        public const string DRIVE_DOWNLOAD = "DRIVE_DOWNLOAD";
+        public const string PHOTO_DOWNLOAD = "PHOTO_DOWNLOAD";
+        public const string DOCUMENT_UPLOAD = "DOCUMENT_UPLOAD";
     }
 }

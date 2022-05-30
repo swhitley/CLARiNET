@@ -64,10 +64,12 @@ namespace CLARiNET
                 switch (options.Command)
                 {
                     case Command.CLAR_UPLOAD:
-                    case Command.CLAR_DOWNLOAD:
+                    case Command.CLAR_DOWNLOAD:                    
                         break;
                     case Command.DRIVE_UPLOAD:
                     case Command.DRIVE_TRASH:
+                    case Command.PHOTO_DOWNLOAD:
+                    case Command.DOCUMENT_UPLOAD:
                         soapUrl = SoapUrlBuild(options.Command);
                         break;
                 }
@@ -79,17 +81,31 @@ namespace CLARiNET
 
                 files = Directory.GetFiles(options.Path, searchPattern, new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive });
 
-                // Special file handling
+                // Special file handling and console update
                 switch (options.Command)
-                {          
+                {
+                    case Command.CLAR_UPLOAD:
+                        Console.WriteLine("\n\nDeploying the CLAR and awaiting the result...\n\n");
+                        break;
                     case Command.CLAR_DOWNLOAD:
+                        Console.WriteLine("\n\nDownloading the CLAR and awaiting the result...\n\n");
                         files = new string[] { Path.Combine(options.Path, options.Parameters + "." + DateTime.Now.ToString("s").Replace(":", ".") + ".clar") };                   
                         break;
+                    case Command.DRIVE_UPLOAD:
+                        Console.WriteLine("\n\nUploading files...\n\n");
+                        break;
                     case Command.DRIVE_TRASH:
+                        Console.WriteLine("\n\nTrashing files...\n\n");
                         if (files.Length > 0)
                         {
                             files = File.ReadAllLines(files[0]);
                         }
+                        break;
+                    case Command.PHOTO_DOWNLOAD:
+                        Console.WriteLine("\n\nDownloading photos...\n\n");
+                        break;
+                    case Command.DOCUMENT_UPLOAD:
+                        Console.WriteLine("\n\nUploading documents...\n\n");
                         break;
                     default:
                         break;
@@ -103,11 +119,9 @@ namespace CLARiNET
                     {
                         case Command.CLAR_UPLOAD:
                             bytes = File.ReadAllBytes(file);
-                            Console.WriteLine("\n\nDeploying the CLAR and awaiting the result...\n\n");
                             result = Encoding.Default.GetString(WDWebService.CallRest(options.Tenant, options.Username + "@" + options.Tenant, options.Password, restUrl, WebRequestMethods.Http.Put, bytes));
                             break;
-                        case Command.CLAR_DOWNLOAD:
-                            Console.WriteLine("\n\nDownloading the CLAR and awaiting the result...\n\n");
+                        case Command.CLAR_DOWNLOAD:                            
                             bytes = WDWebService.CallRest(options.Tenant, options.Username + "@" + options.Tenant, options.Password, restUrl + "?fmt=clar", WebRequestMethods.Http.Get, null);
                             File.WriteAllBytes(file, bytes);
                             result = Encoding.Default.GetString(WDWebService.CallRest(options.Tenant, options.Username + "@" + options.Tenant, options.Password, restUrl, WebRequestMethods.Http.Get, null));
@@ -117,12 +131,19 @@ namespace CLARiNET
                             xnm.AddNamespace("default", "urn:com.workday/esb/cloud/10.0");
                             result = "Last Uploaded to Workday: " + DateTime.Parse(xDoc.XPathSelectElement("//default:deployed-since", xnm).Value).ToLocalTime().ToString("s");
                             break;
-                        case Command.DRIVE_UPLOAD:
+                        case Command.DRIVE_UPLOAD:                            
                             bytes = File.ReadAllBytes(file);
                             result = DriveUpload(file, bytes, soapUrl, options.Username);
                             break;
-                        case Command.DRIVE_TRASH:
+                        case Command.DRIVE_TRASH:                            
                             result = DriveTrash(file, soapUrl, options.Username);
+                            break;
+                        case Command.PHOTO_DOWNLOAD:
+                            result = Photos.Download(options, file, soapUrl);
+                            break;
+                        case Command.DOCUMENT_UPLOAD:                           
+                            bytes = File.ReadAllBytes(file);
+                            result = Documents.Upload(file, bytes, soapUrl, processedDir, options);                            
                             break;
                     }
 
@@ -260,7 +281,16 @@ namespace CLARiNET
                         break;
                     case Command.DRIVE_UPLOAD:
                     case Command.DRIVE_TRASH:
+                    
                         searchPattern = options.Parameters;
+                        break;
+                    case Command.PHOTO_DOWNLOAD:
+                        searchPattern = options.Parameters;
+                        break;
+                    case Command.DOCUMENT_UPLOAD:
+                        searchPattern = "*.*";
+                        break;
+                    default:
                         break;
                 }                
             }
@@ -319,7 +349,9 @@ namespace CLARiNET
                     case Command.CLAR_UPLOAD:
                     case Command.CLAR_DOWNLOAD:
                     case Command.DRIVE_UPLOAD:                    
-                    case Command.DRIVE_TRASH:                    
+                    case Command.DRIVE_TRASH:
+                    case Command.PHOTO_DOWNLOAD:
+                    case Command.DOCUMENT_UPLOAD:
                         break;
                     default:
                         throw new Exception("Invalid command. Please use --help for a list of valid commands.");
@@ -344,6 +376,14 @@ namespace CLARiNET
                         break;
                     case Command.DRIVE_TRASH:
                         options.Path = appDir;
+                        break;
+                    case Command.PHOTO_DOWNLOAD:
+                        options.Path = appDir;
+                        break;
+                    case Command.DOCUMENT_UPLOAD:
+                        options.Path = inboundDir;
+                        break;
+                    default:
                         break;
                 }
             }
@@ -375,6 +415,15 @@ namespace CLARiNET
                     case Command.DRIVE_TRASH:
                         options.Parameters = "*trash*";
                         searchPattern = options.Parameters;
+                        break;
+                    case Command.PHOTO_DOWNLOAD:
+                        Console.WriteLine("Enter the id file name:\n");
+                        options.Parameters = Console.ReadLine().Trim();
+                        Console.WriteLine("");
+                        searchPattern = options.Parameters;     
+                        break;
+                    case Command.DOCUMENT_UPLOAD:
+                        searchPattern = "*.*";
                         break;
                 }
             }
@@ -491,6 +540,12 @@ namespace CLARiNET
                 case Command.DRIVE_UPLOAD:
                 case Command.DRIVE_TRASH:
                     soapUrl += "/{tenant}/Drive/{version}";
+                    break;
+                case Command.PHOTO_DOWNLOAD:
+                    soapUrl += "/{tenant}/Human_Resources/{version}";
+                    break;
+                case Command.DOCUMENT_UPLOAD:
+                    soapUrl += "/{tenant}/Staffing/{version}";
                     break;
             }
             

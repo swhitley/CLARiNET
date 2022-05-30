@@ -117,6 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Get_Worker_Photos_Request" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;bsvc:Get_Worker_Photos_Request bsvc:version="v37.0" xmlns:bsvc="urn:com.workday/bsvc"&gt;
+  &lt;bsvc:Request_References bsvc:Skip_Non_Existing_Instances="true" bsvc:Ignore_Invalid_References="true"&gt;
+   {worker_references}
+  &lt;/bsvc:Request_References&gt;
+&lt;/bsvc:Get_Worker_Photos_Request&gt;</value>
+  </data>
   <data name="Put_Drive_Document_Content_Request" xml:space="preserve">
     <value>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;bsvc:Put_Drive_Document_Content_Request bsvc:version="v37.0" xmlns:bsvc="urn:com.workday/bsvc"&gt;
@@ -157,8 +165,30 @@
 	&lt;/bsvc:Drive_Document_Content_Data&gt;
 &lt;/bsvc:Put_Drive_Document_Content_Request&gt;</value>
   </data>
+  <data name="Put_Worker_Document_Request" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;bsvc:Put_Worker_Document_Request bsvc:Add_Only="false" bsvc:version="v37.0" xmlns:bsvc="urn:com.workday/bsvc"&gt;
+	&lt;bsvc:Worker_Document_Data&gt;
+		&lt;bsvc:Filename&gt;{filename}&lt;/bsvc:Filename&gt;
+		&lt;bsvc:Comment&gt;{comment}&lt;/bsvc:Comment&gt;
+		&lt;bsvc:File&gt;{filedata}&lt;/bsvc:File&gt;
+		&lt;bsvc:Document_Category_Reference&gt;
+			&lt;bsvc:ID bsvc:type="Document_Category_ID"&gt;{documentCategory}&lt;/bsvc:ID&gt;
+		&lt;/bsvc:Document_Category_Reference&gt;
+		&lt;bsvc:Worker_Reference&gt;
+			&lt;bsvc:ID bsvc:type="{workerIdType}"&gt;{workerId}&lt;/bsvc:ID&gt;
+		&lt;/bsvc:Worker_Reference&gt;
+		&lt;bsvc:Content_Type&gt;{contentType}&lt;/bsvc:Content_Type&gt;
+	&lt;/bsvc:Worker_Document_Data&gt;
+&lt;/bsvc:Put_Worker_Document_Request&gt;</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="WDEnvironments" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\WDEnvironments.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="Worker_Reference" xml:space="preserve">
+    <value>&lt;bsvc:Worker_Reference&gt;
+		&lt;bsvc:ID bsvc:type="{id_type}"&gt;{id}&lt;/bsvc:ID&gt;
+	&lt;/bsvc:Worker_Reference&gt;</value>
   </data>
 </root>
