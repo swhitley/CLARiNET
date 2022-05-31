@@ -1,13 +1,20 @@
 # CLARiNET
 <img align="right" src="https://user-images.githubusercontent.com/413552/129500187-ea5a1947-16d2-46eb-ab48-2adc6553b6d8.png" width="50" />
 
-A Workday command-line interface (CLI) for working with Drive files and deploying Workday Studio integrations without Workday Studio.
+A Workday command-line interface (CLI) for working with files (Drive, Documents, Photos) and deploying Workday Studio integrations without Workday Studio.
 
 Windows or Mac
 
 ## Workday Drive Features
 - Upload files in bulk to Workday Drive. Load files for different Workday user accounts.
 - Send files to the Workday Drive Trash.
+
+## Documents
+- Mass file upload to Worker Documents.
+- Select a different document category with each run.
+
+## Profile Pictures
+- Download worker profile pictures.
 
 ## CLAR Backup and Versioning
 - Quickly download and backup a unique version of a CLAR file.
@@ -59,6 +66,16 @@ You might be asking yourself, "Why load a CLAR file from outside of Workday Stud
 - The `clarinet` command is **DRIVE_TRASH**.
 
 Please note that a file is not deleted when sent to the trash.  Files can be individually restored from the trash if needed.
+
+## Uploading files to Worker Documents
+- Ensure that a directory named `inbound` has been created alongside the `clarinet` program file.  The directory will be created automatically when `clarinet` is executed.
+- Place each file in the inbound directory with the following file name format:   {Workday Employee ID}\~{File Name}<br/>
+  Example:  500117\~MyExampleFile.txt
+- Enter `clarinet` on a line by itself.  The application will prompt for all necessary information.
+- The `clarinet` command is **DOCUMENT_UPLOAD**.
+- The document category is supplied in the `Parameter`.
+- Each file in the `inbound` directory will be uploaded to to worker documents for the appropriate Workday employee id.  The file name in Workday Drive will only show the text following the tilde (\~).
+- Once uploaded successfully, each file will be moved to the `processed` directory.
 
 ## Download a snapshot of a CLAR file from Workday
 
