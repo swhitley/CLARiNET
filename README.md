@@ -68,14 +68,26 @@ You might be asking yourself, "Why load a CLAR file from outside of Workday Stud
 Please note that a file is not deleted when sent to the trash.  Files can be individually restored from the trash if needed.
 
 ## Uploading files to Worker Documents
+
 - Ensure that a directory named `inbound` has been created alongside the `clarinet` program file.  The directory will be created automatically when `clarinet` is executed.
 - Place each file in the inbound directory with the following file name format:   {Workday Employee ID}\~{File Name}<br/>
   Example:  500117\~MyExampleFile.txt
 - Enter `clarinet` on a line by itself.  The application will prompt for all necessary information.
 - The `clarinet` command is **DOCUMENT_UPLOAD**.
-- The document category is supplied in the `Parameter`.
-- Each file in the `inbound` directory will be uploaded to to worker documents for the appropriate Workday employee id.  The file name in Workday Drive will only show the text following the tilde (\~).
+- Enter the document category reference id in the CLARiNET `Parameters` option.
+- Each file in the `inbound` directory will be uploaded to worker documents for the appropriate Workday employee.  The file name will only show the text following the tilde (\~).
 - Once uploaded successfully, each file will be moved to the `processed` directory.
+
+## Download Profile Pictures (Employee Photos)
+
+- Create a manifest file with a list of employee ids, one id on each line.  This is the list of workers that will be used to download photos.
+- Place the manifest file in the directory to which the photos should be downloaded.
+- Enter `clarinet` on a line by itself.  The application will prompt for all necessary information.
+- The `clarinet` command is **PHOTO_DOWNLOAD**.
+- The `Path` option should point to the path where the manifest file is located.
+- The `Parameter` option should be the name of the manifest file.
+- Run `clarinet --help` to view the available options.
+- Run `clarinet -w` to view the list of Workday environments and the associated numbers.
 
 ## Download a snapshot of a CLAR file from Workday
 
@@ -96,7 +108,7 @@ Please note that a file is not deleted when sent to the trash.  Files can be ind
 
 ## Run CLARiNET from the command line using positional parameters:
 
-* %1 CLARiNET Command:  `CLAR_UPLOAD`, `CLAR_DOWNLOAD`, `DRIVE_UPLOAD`, `DRIVE_TRASH`<br/>
+* %1 CLARiNET Command:  `CLAR_UPLOAD`, `CLAR_DOWNLOAD`, `DRIVE_UPLOAD`, `DRIVE_TRASH`, `PHOTO_DOWNLOAD`, `DOCUMENT_UPLOAD`<br/>
 * %2 Path or Path and File Name<br/>
 * %3 Parameters for the command.  Enter the **Cloud Collection** name when performing a **CLAR_UPLOAD** or **CLAR_DOWNLOAD**.  For other commands, defaults will be used<br/>
 * %4 Workday Environment Number (run `clarinet -w` to see the list of numbers)<br/>
