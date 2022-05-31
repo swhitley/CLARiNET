@@ -74,18 +74,23 @@ Please note that a file is not deleted when sent to the trash.  Files can be ind
   Example:  500117\~MyExampleFile.txt
 - Enter `clarinet` on a line by itself.  The application will prompt for all necessary information.
 - The `clarinet` command is **DOCUMENT_UPLOAD**.
-- Enter the document category reference id in the CLARiNET `Parameters` option.
+- Enter the document category reference id in the CLARiNET `Parameters` option.  This document category will be used for all files.
 - Each file in the `inbound` directory will be uploaded to worker documents for the appropriate Workday employee.  The file name will only show the text following the tilde (\~).
 - Once uploaded successfully, each file will be moved to the `processed` directory.
 
 ## Download Profile Pictures (Employee Photos)
 
-- Create a manifest file with a list of employee ids, one id on each line.  This is the list of workers that will be used to download photos.
-- Place the manifest file in the directory to which the photos should be downloaded.
+- Create a CSV file with a list of employee ids (one id on each line).  
+    - This is the list of workers that will be used to download photos.
+    - If any of the workers are contingent workers, add `Contingent_Worker_ID` as the second field of the CSV.
+    - Example:
+        500117
+        500118,Contingent_Worker_ID
+- Place the CSV file in the directory to which the photos should be downloaded.
 - Enter `clarinet` on a line by itself.  The application will prompt for all necessary information.
 - The `clarinet` command is **PHOTO_DOWNLOAD**.
-- The `Path` option should point to the path where the manifest file is located.
-- The `Parameter` option should be the name of the manifest file.
+- The `Path` option should point to the path where the CSV file is located.
+- The `Parameter` option should be the name of the CSV file.
 - Run `clarinet --help` to view the available options.
 - Run `clarinet -w` to view the list of Workday environments and the associated numbers.
 
