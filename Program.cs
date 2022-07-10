@@ -265,23 +265,31 @@ namespace CLARiNET
                 options.Command = options.Command.Trim().ToUpper();
             }
 
+            // Path parameter is a file
+            if (options != null && options.Path != null && options.Command == Command.CLAR_UPLOAD)
+            {
+                if (File.Exists(options.Path))
+                {
+                    searchPattern = Path.GetFileName(options.Path);
+                    options.Path = options.Path.Substring(0, options.Path.Length - searchPattern.Length);
+                }
+            }
+
             // Set search pattern and cloud collection if parameters are included.
             if (options != null && options.Parameters != null)
             {
                 switch (options.Command)
                 {
-                    case Command.CLAR_UPLOAD:
+                    case Command.CLAR_UPLOAD:                       
+                        cloudCollection = options.Parameters;
+                        break;
                     case Command.CLAR_DOWNLOAD:                        
-                        if (options.Command == Command.CLAR_DOWNLOAD)
-                        {
-                            searchPattern = "";
-                            options.Parameters = Path.GetFileName(Path.TrimEndingDirectorySeparator(options.Parameters));
-                        }
+                        searchPattern = "";
+                        options.Parameters = Path.GetFileName(Path.TrimEndingDirectorySeparator(options.Parameters));
                         cloudCollection = options.Parameters;
                         break;
                     case Command.DRIVE_UPLOAD:
-                    case Command.DRIVE_TRASH:
-                    
+                    case Command.DRIVE_TRASH:                    
                         searchPattern = options.Parameters;
                         break;
                     case Command.PHOTO_DOWNLOAD:
@@ -402,7 +410,10 @@ namespace CLARiNET
                         cloudCollection = Console.ReadLine().Trim();
                         Console.WriteLine("");
                         options.Parameters = cloudCollection;
-                        searchPattern = "*.clar";
+                        if (searchPattern.ToLower().IndexOf(".clar") < 0)
+                        {
+                            searchPattern = "*.clar";
+                        }
                         if (options.Command == Command.CLAR_DOWNLOAD)
                         {
                             searchPattern = "";
