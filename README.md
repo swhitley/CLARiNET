@@ -83,9 +83,13 @@ Please note that a file is not deleted when sent to the trash.  Files can be ind
 - Create a CSV file with a list of employee ids (one id on each line).  
     - This is the list of workers that will be used to download photos.
     - If any of the workers are contingent workers, add `Contingent_Worker_ID` as the second field of the CSV.
-    - Example:
-        500117
-        500118,Contingent_Worker_ID
+
+      Example:
+
+      <code>500117</code>
+      
+      <code>500118,Contingent_Worker_ID</code>
+
 - Place the CSV file in the directory to which the photos should be downloaded.
 - Enter `clarinet` on a line by itself.  The application will prompt for all necessary information.
 - The `clarinet` command is **PHOTO_DOWNLOAD**.
