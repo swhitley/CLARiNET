@@ -13,6 +13,7 @@ namespace CLARiNET
         public const string DRIVE_UPLOAD = "DRIVE_UPLOAD";
         public const string DRIVE_TRASH = "DRIVE_TRASH";
         public const string PHOTO_DOWNLOAD = "PHOTO_DOWNLOAD";
+        public const string PHOTO_UPLOAD = "PHOTO_UPLOAD";
         public const string DOCUMENT_UPLOAD = "DOCUMENT_UPLOAD";
     }
 }

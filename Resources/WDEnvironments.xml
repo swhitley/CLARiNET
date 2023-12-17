@@ -1,99 +1,147 @@
 ﻿<?xml version="1.0"?>
 <envs>
-  <env name="Production (Ashburn)" type="prod">
-    <e2-endpoint>e2-enterprise-services1.myworkday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Production (Portland)" type="prod">
-    <e2-endpoint>wd5-e2.myworkday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Production (WD3)" type="prod">
-    <e2-endpoint>wd3-e2.myworkday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Production (WD12)" type="prod">
-    <e2-endpoint>e2.wd12.myworkday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Production (WD10)" type="prod">
-    <e2-endpoint>e2.wd10.myworkday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Production (WD102)" type="prod">
-    <e2-endpoint>e2.wd102.myworkday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Sandbox (Atlanta)" type="sbox">
-    <e2-endpoint>e2-impl-cci.workday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Sandbox (Portland)" type="sbox">
-    <e2-endpoint>wd5-impl-e2.workday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Sandbox (WD3)" type="sbox">
-    <e2-endpoint>wd3-e2-impl.workday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Sandbox (WD12)" type="sbox">
-    <e2-endpoint>impl-e2.wd12.myworkday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Sandbox (WD10)" type="sbox">
-    <e2-endpoint>impl-e2.wd10.myworkday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Sandbox (WD102)" type="sbox">
-    <e2-endpoint>impl-e2.wd102.myworkday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Sandbox Preview (Atlanta)" type="sboxPreview">
-    <e2-endpoint>e2-impl-cci.workday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Sandbox Preview (Portland)" type="sboxPreview">
-    <e2-endpoint>wd5-impl-e2.workday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Sandbox Preview (WD3)" type="sboxPreview">
-    <e2-endpoint>wd3-e2-impl.workday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Sandbox Preview (WD12)" type="sboxPreview">
-    <e2-endpoint>impl-e2.wd12.myworkday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Sandbox Preview (WD10)" type="sboxPreview">
-    <e2-endpoint>impl-e2.wd10.myworkday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Sandbox Preview (WD102)" type="sboxPreview">
-    <e2-endpoint>impl-e2.wd102.myworkday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Implementation (Atlanta)" type="impl">
-    <e2-endpoint>e2-impl-cci.workday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Implementation (Portland)" type="impl">
-    <e2-endpoint>wd5-impl-e2.workday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Implementation (WD3)" type="impl">
-    <e2-endpoint>wd3-e2-impl.workday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Implementation (WD12)" type="impl">
-    <e2-endpoint>impl-e2.wd12.myworkday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Implementation (WD10)" type="impl">
-    <e2-endpoint>impl-e2.wd10.myworkday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
-  <env name="Implementation (WD102)" type="impl">
-    <e2-endpoint>impl-e2.wd102.myworkday.com</e2-endpoint>
-    <app-endpoint></app-endpoint>
-  </env>
+	<env name="Production (WD1)" type="prod">
+		<e2-endpoint>e2-enterprise-services1.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Production (WD3)" type="prod">
+		<e2-endpoint>wd3-e2.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Production (WD5)" type="prod">
+		<e2-endpoint>wd5-e2.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Production (WD10)" type="prod">
+		<e2-endpoint>e2.wd10.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Production (WD12)" type="prod">
+		<e2-endpoint>e2.wd12.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Production (WD102)" type="prod">
+		<e2-endpoint>e2.wd102.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Production (WD103)" type="prod">
+		<e2-endpoint>e2.wd103.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Production (WD104)" type="prod">
+		<e2-endpoint>e2.wd104.myworkdaygov.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Production (WD105)" type="prod">
+		<e2-endpoint>e2.wd105.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Sandbox (WD2)" type="sbox">
+		<e2-endpoint>e2-impl-cci.workday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Sandbox (WD3)" type="sbox">
+		<e2-endpoint>wd3-e2-impl.workday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Sandbox (WD5)" type="sbox">
+		<e2-endpoint>wd5-impl-e2.workday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Sandbox (WD10)" type="sbox">
+		<e2-endpoint>impl-e2.wd10.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Sandbox (WD12)" type="sbox">
+		<e2-endpoint>impl-e2.wd12.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Sandbox (WD102)" type="sbox">
+		<e2-endpoint>impl-e2.wd102.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Sandbox (WD103)" type="sbox">
+		<e2-endpoint>impl-e2.wd103.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Sandbox (WD104)" type="sbox">
+		<e2-endpoint>impl-e2.wd104.myworkdaygov.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Sandbox (WD105)" type="sbox">
+		<e2-endpoint>impl-e2.wd105.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Sandbox Preview (WD2)" type="sboxPreview">
+		<e2-endpoint>e2-impl-cci.workday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Sandbox Preview (WD3)" type="sboxPreview">
+		<e2-endpoint>wd3-e2-impl.workday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Sandbox Preview (WD5)" type="sboxPreview">
+		<e2-endpoint>wd5-impl-e2.workday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Sandbox Preview (WD10)" type="sboxPreview">
+		<e2-endpoint>impl-e2.wd10.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Sandbox Preview (WD12)" type="sboxPreview">
+		<e2-endpoint>impl-e2.wd12.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Sandbox Preview (WD102)" type="sboxPreview">
+		<e2-endpoint>impl-e2.wd102.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Sandbox Preview (WD103)" type="sboxPreview">
+		<e2-endpoint>impl-e2.wd103.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Sandbox Preview (WD104)" type="sboxPreview">
+		<e2-endpoint>impl-e2.wd104.myworkdaygov.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Sandbox Preview (WD105)" type="sboxPreview">
+		<e2-endpoint>impl-e2.wd105.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Implementation (WD2)" type="impl">
+		<e2-endpoint>e2-impl-cci.workday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Implementation (WD3)" type="impl">
+		<e2-endpoint>wd3-e2-impl.workday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Implementation (WD5)" type="impl">
+		<e2-endpoint>wd5-impl-e2.workday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Implementation (WD10)" type="impl">
+		<e2-endpoint>impl-e2.wd10.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Implementation (WD12)" type="impl">
+		<e2-endpoint>impl-e2.wd12.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Implementation (WD102)" type="impl">
+		<e2-endpoint>impl-e2.wd102.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Implementation (WD103)" type="impl">
+		<e2-endpoint>impl-e2.wd103.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Implementation (WD104)" type="impl">
+		<e2-endpoint>impl-e2.wd104.myworkdaygov.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
+	<env name="Implementation (WD105)" type="impl">
+		<e2-endpoint>impl-e2.wd105.myworkday.com</e2-endpoint>
+		<app-endpoint></app-endpoint>
+	</env>
 </envs>

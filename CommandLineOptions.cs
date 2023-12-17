@@ -9,7 +9,7 @@ namespace CLARiNET
 {
     public class Options
     {
-        [Value(index: 0, MetaName = "Command", Required = false, HelpText = "CLARiNET Commands:\n\nCLAR_UPLOAD\nCLAR_DOWNLOAD\nDRIVE_UPLOAD\nDRIVE_TRASH\nPHOTO_DOWNLOAD\nDOCUMENT_UPLOAD")]
+        [Value(index: 0, MetaName = "Command", Required = false, HelpText = "CLARiNET Commands:\n\nCLAR_UPLOAD\nCLAR_DOWNLOAD\nDRIVE_UPLOAD\nDRIVE_TRASH\nPHOTO_DOWNLOAD\nPHOTO_UPLOAD\nDOCUMENT_UPLOAD")]
         public string Command { get; set; }
 
         [Value(index: 1, MetaName = "File or Directory", Required = false, HelpText = "Path or Path and file name")]

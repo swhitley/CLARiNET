@@ -182,6 +182,19 @@
 	&lt;/bsvc:Worker_Document_Data&gt;
 &lt;/bsvc:Put_Worker_Document_Request&gt;</value>
   </data>
+  <data name="Put_Worker_Photo_Request" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;bsvc:Put_Worker_Photo_Request bsvc:version="v39.1" xmlns:bsvc="urn:com.workday/bsvc"&gt;
+  &lt;bsvc:Worker_Reference&gt;
+    &lt;bsvc:ID bsvc:type="{workerIdType}"&gt;{workerId}&lt;/bsvc:ID&gt;
+  &lt;/bsvc:Worker_Reference&gt;
+  &lt;bsvc:Worker_Photo_Data&gt;
+    &lt;bsvc:ID&gt;{workerId}&lt;/bsvc:ID&gt;
+    &lt;bsvc:Filename&gt;{filename}&lt;/bsvc:Filename&gt;
+    &lt;bsvc:File&gt;{filedata}&lt;/bsvc:File&gt;
+  &lt;/bsvc:Worker_Photo_Data&gt;
+&lt;/bsvc:Put_Worker_Photo_Request&gt;</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="WDEnvironments" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\WDEnvironments.xml;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>

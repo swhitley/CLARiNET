@@ -69,6 +69,7 @@ namespace CLARiNET
                     case Command.DRIVE_UPLOAD:
                     case Command.DRIVE_TRASH:
                     case Command.PHOTO_DOWNLOAD:
+                    case Command.PHOTO_UPLOAD:
                     case Command.DOCUMENT_UPLOAD:
                         soapUrl = SoapUrlBuild(options.Command);
                         break;
@@ -103,6 +104,9 @@ namespace CLARiNET
                         break;
                     case Command.PHOTO_DOWNLOAD:
                         Console.WriteLine("\n\nDownloading photos...\n\n");
+                        break;
+                    case Command.PHOTO_UPLOAD:
+                        Console.WriteLine("\n\nUploading photos...\n\n");
                         break;
                     case Command.DOCUMENT_UPLOAD:
                         Console.WriteLine("\n\nUploading documents...\n\n");
@@ -140,6 +144,10 @@ namespace CLARiNET
                             break;
                         case Command.PHOTO_DOWNLOAD:
                             result = Photos.Download(options, file, soapUrl);
+                            break;
+                        case Command.PHOTO_UPLOAD:
+                            bytes = File.ReadAllBytes(file);
+                            result = Photos.Upload(file, bytes, soapUrl, processedDir, options);
                             break;
                         case Command.DOCUMENT_UPLOAD:                           
                             bytes = File.ReadAllBytes(file);
@@ -295,6 +303,7 @@ namespace CLARiNET
                     case Command.PHOTO_DOWNLOAD:
                         searchPattern = options.Parameters;
                         break;
+                    case Command.PHOTO_UPLOAD:
                     case Command.DOCUMENT_UPLOAD:
                         searchPattern = "*.*";
                         break;
@@ -359,6 +368,7 @@ namespace CLARiNET
                     case Command.DRIVE_UPLOAD:                    
                     case Command.DRIVE_TRASH:
                     case Command.PHOTO_DOWNLOAD:
+                    case Command.PHOTO_UPLOAD:
                     case Command.DOCUMENT_UPLOAD:
                         break;
                     default:
@@ -388,6 +398,7 @@ namespace CLARiNET
                     case Command.PHOTO_DOWNLOAD:
                         options.Path = appDir;
                         break;
+                    case Command.PHOTO_UPLOAD:
                     case Command.DOCUMENT_UPLOAD:
                         options.Path = inboundDir;
                         break;
@@ -433,6 +444,7 @@ namespace CLARiNET
                         Console.WriteLine("");
                         searchPattern = options.Parameters;     
                         break;
+                    case Command.PHOTO_UPLOAD:
                     case Command.DOCUMENT_UPLOAD:
                         searchPattern = "*.*";
                         break;
@@ -552,6 +564,7 @@ namespace CLARiNET
                 case Command.DRIVE_TRASH:
                     soapUrl += "/{tenant}/Drive/{version}";
                     break;
+                case Command.PHOTO_UPLOAD:
                 case Command.PHOTO_DOWNLOAD:
                     soapUrl += "/{tenant}/Human_Resources/{version}";
                     break;

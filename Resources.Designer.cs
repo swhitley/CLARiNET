@@ -130,21 +130,41 @@ namespace CLARiNET {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;bsvc:Put_Worker_Photo_Request bsvc:version=&quot;v39.1&quot; xmlns:bsvc=&quot;urn:com.workday/bsvc&quot;&gt;
+        ///  &lt;bsvc:Worker_Reference&gt;
+        ///    &lt;bsvc:ID bsvc:type=&quot;{workerIdType}&quot;&gt;{workerId}&lt;/bsvc:ID&gt;
+        ///  &lt;/bsvc:Worker_Reference&gt;
+        ///  &lt;bsvc:Worker_Photo_Data&gt;
+        ///    &lt;bsvc:ID&gt;{workerId}&lt;/bsvc:ID&gt;
+        ///    &lt;bsvc:Filename&gt;{filename}&lt;/bsvc:Filename&gt;
+        ///    &lt;bsvc:File&gt;{filedata}&lt;/bsvc:File&gt;
+        ///  &lt;/bsvc:Worker_Photo_Data&gt;
+        ///&lt;/bsvc:Put_Worker_Photo_Request&gt;.
+        /// </summary>
+        internal static string Put_Worker_Photo_Request {
+            get {
+                return ResourceManager.GetString("Put_Worker_Photo_Request", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
         ///&lt;envs&gt;
-        ///  &lt;env name=&quot;Production (Ashburn)&quot; type=&quot;prod&quot;&gt;
-        ///    &lt;e2-endpoint&gt;e2-enterprise-services1.myworkday.com&lt;/e2-endpoint&gt;
-        ///    &lt;app-endpoint&gt;&lt;/app-endpoint&gt;
-        ///  &lt;/env&gt;
-        ///  &lt;env name=&quot;Production (Portland)&quot; type=&quot;prod&quot;&gt;
-        ///    &lt;e2-endpoint&gt;wd5-e2.myworkday.com&lt;/e2-endpoint&gt;
-        ///    &lt;app-endpoint&gt;&lt;/app-endpoint&gt;
-        ///  &lt;/env&gt;
-        ///  &lt;env name=&quot;Production (WD3)&quot; type=&quot;prod&quot;&gt;
-        ///    &lt;e2-endpoint&gt;wd3-e2.myworkday.com&lt;/e2-endpoint&gt;
-        ///    &lt;app-endpoint&gt;&lt;/app-endpoint&gt;
-        ///  &lt;/env&gt;
-        ///  &lt;env name=&quot;Production (W [rest of string was truncated]&quot;;.
+        ///	&lt;env name=&quot;Production (WD1)&quot; type=&quot;prod&quot;&gt;
+        ///		&lt;e2-endpoint&gt;e2-enterprise-services1.myworkday.com&lt;/e2-endpoint&gt;
+        ///		&lt;app-endpoint&gt;&lt;/app-endpoint&gt;
+        ///	&lt;/env&gt;
+        ///	&lt;env name=&quot;Production (WD3)&quot; type=&quot;prod&quot;&gt;
+        ///		&lt;e2-endpoint&gt;wd3-e2.myworkday.com&lt;/e2-endpoint&gt;
+        ///		&lt;app-endpoint&gt;&lt;/app-endpoint&gt;
+        ///	&lt;/env&gt;
+        ///	&lt;env name=&quot;Production (WD5)&quot; type=&quot;prod&quot;&gt;
+        ///		&lt;e2-endpoint&gt;wd5-e2.myworkday.com&lt;/e2-endpoint&gt;
+        ///		&lt;app-endpoint&gt;&lt;/app-endpoint&gt;
+        ///	&lt;/env&gt;
+        ///	&lt;env name=&quot;Production (WD10)&quot; type=&quot;prod&quot;&gt;
+        ///		&lt;e2-en [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string WDEnvironments {
             get {
