@@ -14,7 +14,7 @@ Windows or Mac
 - Select a different document category with each run.
 
 ## Profile Pictures
-- Download worker profile pictures.
+- Download or upload worker profile pictures.
 
 ## CLAR Backup and Versioning
 - Quickly download and backup a unique version of a CLAR file.
@@ -96,7 +96,17 @@ Please note that a file is not deleted when sent to the trash.  Files can be ind
 - The `Path` option should point to the path where the CSV file is located.
 - The `Parameter` option should be the name of the CSV file.
 - Run `clarinet --help` to view the available options.
-- Run `clarinet -w` to view the list of Workday environments and the associated numbers.
+- Run `clarinet -w` to view the list of Workday environments and the associated numbers.  
+
+## Uploading Profile Pictures (Employee Photos)
+
+- Ensure that a directory named `inbound` has been created alongside the `clarinet` program file.  The directory will be created automatically when `clarinet` is executed.
+- Place each file in the inbound directory with the following file name format:   {Workday Employee ID}\~{File Name}<br/>
+  Example:  500117\~MyPhoto.png
+- Enter `clarinet` on a line by itself.  The application will prompt for all necessary information.
+- The `clarinet` command is **PHOTO_UPLOAD**.
+- Each file in the `inbound` directory will be uploaded for the appropriate Workday employee.  The file name will only show the text following the tilde (\~).
+- Once uploaded successfully, each file will be moved to the `processed` directory.
 
 ## Download a snapshot of a CLAR file from Workday
 
