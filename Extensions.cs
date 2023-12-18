@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,6 +30,14 @@ namespace CLARiNET
 
             if (count > 0)
                 yield return items.Take(count);
+        }
+
+
+        public static void BasicAuth(this HttpRequestMessage http, string username, string password)
+        {
+            var authenticationString = $"{username}:{password}";
+            var base64String = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
+            http.Headers.Authorization = new AuthenticationHeaderValue("Basic", base64String);
         }
     }
 }

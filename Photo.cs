@@ -18,6 +18,9 @@ namespace CLARiNET
             string workerRef = Resources.Worker_Reference;
             string result = "";
             string path = Path.GetDirectoryName(file);
+            int batchErrors = 0;
+            int errors = 0;
+            int batchNum = 1;
 
             Dictionary<string,string> ids = File.ReadLines(file).Select(line => line.Split(',')).ToDictionary(line => line[0], line => line.Count() > 1 ? line[1] : "");
 
@@ -72,19 +75,28 @@ namespace CLARiNET
                                     {
                                         Console.WriteLine("\n\nError: " + ex3.Message);
                                         Console.WriteLine("\n");
+                                        errors++;
                                     }
                                 }
                             }
+                        }
+                        else
+                        {
+                            Console.WriteLine("\n\nBatch {0:N0} Error: No data returned.\n\n{1}", batchNum, result);
+                            Console.WriteLine("\n");
+                            errors++;
                         }
                         
                     }
                     catch(Exception batchEx)
                     {
-                        Console.WriteLine("\n\nError: " + batchEx.Message);
+                        Console.WriteLine("\n\nBatch {0:N0} Error: {1}", batchNum, batchEx.Message);
                         Console.WriteLine("\n");
+                        batchErrors++;
                     }
+                    batchNum++;
                 }
-                result = String.Format("Processed {0:N0} id{1}.", ids.Count(), ids.Count() == 1 ? "" : "s");
+                result = String.Format("Processed {0:N0} id{1}\nFile Errors: {2:N0}\nBatch Errors: {3:N0}\n", ids.Count(), ids.Count() == 1 ? "" : "s", errors, batchErrors);
             }
             catch (Exception ex)
             {

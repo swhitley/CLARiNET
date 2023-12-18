@@ -7,34 +7,37 @@ using System.Text.Json;
 using System.Text;
 using System.IO;
 using HtmlAgilityPack;
+using System.Net.Http;
+using System.Reflection.Metadata;
+using System.Net.Http.Headers;
+using static System.Net.WebRequestMethods;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Reflection.PortableExecutable;
+using System.Xml.XPath;
 
 namespace CLARiNET
 {
     public class WDWebService
     {
+        static readonly HttpClient _client = new HttpClient();
+
         public static byte[] CallRest(string tenant, string username, string password, string url, string method, byte[] data)
         {
-            using (var webClient = new WebClient())
-            {
-                ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                if (!String.IsNullOrEmpty(username))
-                {
-                    webClient.Credentials = new NetworkCredential(username, password);
-                    webClient.Headers.Add("X-Originator", "CLARiNET");
-                    webClient.Headers.Add("X-Tenant", tenant);
-                    if (method == WebRequestMethods.Http.Get)
-                    {
-                        return webClient.DownloadData(url);
-                    }
-                    else
-                    {
-                        return webClient.UploadData(url, data);
-                    }
-                }
+            HttpRequestMessage http = new HttpRequestMessage();
+            http.Headers.Add("X-Originator", "CLARiNET");
+            http.Headers.Add("X-Tenant", tenant);
+            http.RequestUri = new Uri(url);
+            http.Method = new HttpMethod(method);
+            http.BasicAuth(username, password);
+
+            if (method != WebRequestMethods.Http.Get)
+            { 
+                http.Content = new ByteArrayContent(data);              
             }
-            return null;
+
+            HttpResponseMessage response = _client.Send(http);
+            return response.Content.ReadAsByteArrayAsync().Result;
+
         }
 
         public static string WrapSOAP(string username, string password, string xmlBody)
@@ -120,10 +123,13 @@ namespace CLARiNET
             string html = "";
             HtmlAgilityPack.HtmlDocument htmlDoc = new HtmlAgilityPack.HtmlDocument();
 
-            using (var webClient = new WebClient())
-            {
-                html = webClient.DownloadString(url);
-            }
+            HttpRequestMessage http = new HttpRequestMessage();
+            http.RequestUri = new Uri(url);
+            
+
+            HttpResponseMessage response = _client.Send(http);
+            html =  response.Content.ReadAsStringAsync().Result;
+
             htmlDoc.LoadHtml(html);
 
             HtmlNodeCollection nodes = htmlDoc.DocumentNode.SelectNodes("//a[contains(@href, '.xsd')]");
@@ -144,60 +150,67 @@ namespace CLARiNET
 
         public static string GetServiceURL(string envURL, string tenant, string username, string password)
         {
-            string result = "";
 
-            using (var webClient = new WebClient())
-            {
-                ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                webClient.Credentials = new NetworkCredential(username + "@" + tenant, password);
-                result = webClient.DownloadString(envURL + "/cc-cloud-master/service-gateway");
-            }
+            HttpRequestMessage http = new HttpRequestMessage();
+            http.RequestUri = new Uri(envURL + "/cc-cloud-master/service-gateway");
+            http.BasicAuth(username + "@" + tenant, password);
 
-            return result;
+            HttpResponseMessage response = _client.Send(http);
+            return response.Content.ReadAsStringAsync().Result;
+
         }
 
         public static string CallAPI(string username, string password, string url, string xmlData)
         {
             try
             {
-                using (var webClient = new WebClient())
-                {
-                    webClient.Headers.Add("Content-Type", "text/xml; charset=utf-8");
-                    ServicePointManager.Expect100Continue = true;
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                    ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-                    webClient.Credentials = new NetworkCredential(username, password);
-                    byte[] data = Encoding.UTF8.GetBytes(WDWebService.WrapSOAP(username, password, xmlData));
-                    byte[] rData = webClient.UploadData(url, data);
+                HttpRequestMessage http = new HttpRequestMessage();
 
-                    return new XDeclaration("1.0", "UTF-8", null).ToString() + Environment.NewLine + XDocument.Parse(Encoding.UTF8.GetString(rData)).ToString() + Environment.NewLine;
-                }
-            }
-            catch (WebException webEx)
-            {
-                String responseFromServer = webEx.Message.ToString() + Environment.NewLine;
-                if (webEx.Response != null)
+                http.RequestUri = new Uri(url);
+                http.Method = new HttpMethod(WebRequestMethods.Http.Post);
+                http.BasicAuth(username, password);
+
+
+                byte[] data = Encoding.UTF8.GetBytes(WDWebService.WrapSOAP(username, password, xmlData));
+                http.Content = new ByteArrayContent(data);
+                http.Content.Headers.Add("Content-Type", "text/xml; charset=utf-8");
+
+                HttpResponseMessage response = _client.Send(http);
+
+                if (!response.IsSuccessStatusCode)
                 {
-                    using (WebResponse response = webEx.Response)
+                    try
                     {
-                        Stream dataRs = response.GetResponseStream();
-                        using (StreamReader reader = new StreamReader(dataRs))
+                        string result = response.Content.ReadAsStringAsync().Result;
+                        var xDoc = XDocument.Parse(result);
+                        XmlNamespaceManager ns = new XmlNamespaceManager(new NameTable());
+                        ns.AddNamespace("wd", "urn:com.workday/bsvc");
+                        if (xDoc != null)
                         {
-                            try
-                            {
-                                responseFromServer += XDocument.Parse(reader.ReadToEnd());
-                            }
-                            catch
-                            {
-                                // ignore exception
-                            }
+                            result = xDoc.XPathSelectElement("//faultstring", ns).Value;
                         }
+                        return result;
                     }
+                    catch
+                    {
+                        // ignore exception
+                    }
+                    return null;
+
                 }
+
+                byte[] rData = response.Content.ReadAsByteArrayAsync().Result;
+                return new XDeclaration("1.0", "UTF-8", null).ToString() + Environment.NewLine + XDocument.Parse(Encoding.UTF8.GetString(rData)).ToString() + Environment.NewLine;
+
+            }
+            catch (HttpRequestException webEx)
+            {
+
+                string responseFromServer = webEx.Message.ToString() + Environment.NewLine;
                 return responseFromServer;
             }
         }
+
+       
     }
 }
