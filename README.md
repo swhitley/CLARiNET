@@ -33,7 +33,7 @@ You might be asking yourself, "Why load a CLAR file from outside of Workday Stud
 1. Download the [latest release](https://github.com/swhitley/CLARiNET/releases/latest) for your operating system (Mac or Windows).
 3. Unzip the executable files into a new directory.
 4. Run `clarinet --help` to view the available options.
-5. You may need to install the [dotnet core runtime](https://dotnet.microsoft.com/download/dotnet/5.0/runtime).
+5. You may need to install the [dotnet core runtime](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).
 6. Optional: Download [Test.clar](https://github.com/swhitley/CLARiNET/blob/main/Test.clar) to try it out.
 
 **Notes:** 
