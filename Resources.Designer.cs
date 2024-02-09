@@ -76,6 +76,25 @@ namespace CLARiNET {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+        ///&lt;bsvc:Put_Candidate_Attachment_Request bsvc:Add_Only=&quot;false&quot; bsvc:version=&quot;v41.1&quot; xmlns:bsvc=&quot;urn:com.workday/bsvc&quot;&gt;
+        ///	&lt;bsvc:Candidate_Reference&gt;
+        ///		&lt;bsvc:ID bsvc:type=&quot;Candidate_ID&quot;&gt;{candidateId}&lt;/bsvc:ID&gt;
+        ///	&lt;/bsvc:Candidate_Reference&gt;
+        ///	&lt;bsvc:Job_Application_Attachment_Data&gt;
+        ///		&lt;bsvc:Job_Application_Reference&gt;
+        ///			&lt;bsvc:ID bsvc:type=&quot;Job_Application_ID&quot;&gt;{applicationId}&lt;/bsvc:ID&gt;
+        ///		&lt;/bsvc:Job_Application_Reference&gt;
+        ///		&lt;bsvc:Attachment_Data&gt;
+        ///			&lt;bsvc:Filename&gt;{filen [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Put_Candidate_Attachment_Request {
+            get {
+                return ResourceManager.GetString("Put_Candidate_Attachment_Request", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
         ///&lt;bsvc:Put_Drive_Document_Content_Request bsvc:version=&quot;v37.0&quot; xmlns:bsvc=&quot;urn:com.workday/bsvc&quot;&gt;
         ///	&lt;bsvc:Add_Only&gt;true&lt;/bsvc:Add_Only&gt;
         ///	&lt;bsvc:Drive_Document_Content_Data&gt;

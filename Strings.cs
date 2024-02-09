@@ -15,5 +15,6 @@ namespace CLARiNET
         public const string PHOTO_DOWNLOAD = "PHOTO_DOWNLOAD";
         public const string PHOTO_UPLOAD = "PHOTO_UPLOAD";
         public const string DOCUMENT_UPLOAD = "DOCUMENT_UPLOAD";
+        public const string CANDIDATE_ATTACHMENT_UPLOAD = "CANDIDATE_ATTACHMENT_UPLOAD";
     }
 }

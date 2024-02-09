@@ -57,8 +57,45 @@ namespace CLARiNET
                     return;
                 }
 
-                // Option UI
-                OptionsUI();
+                
+                if (options != null)
+                {
+                    // Command
+                    CommandOption();
+                    CommandValidate();
+                    // Path
+                    PathOption();
+                    PathValidate();
+                    // Parameters
+                    ParameterOption();
+                    ParameterValidate();
+                    // Files Check
+                    FilesCheck();
+                    // Environment
+                    EnvironmentOption();
+                    // Tenant
+                    TenantOption();
+                    // Username
+                    UsernameOption();
+                    // Password
+                    PasswordOption();
+                }
+
+                if (options.PrintCommandline)
+                {
+                    Console.WriteLine("\n\n");
+                    Console.WriteLine("clarinet {0} {1} {2} {3} {4} {5} {6}",
+                        options.Command,
+                        options.Path,
+                        options.Parameters,
+                        options.EnvNum,
+                        options.Tenant,
+                        options.Username,
+                        Crypto.Protect(options.Password));
+                    Console.WriteLine("\n\n");
+                    return;
+                }
+
 
                 // Post Init and UI Option Handling
                 switch (options.Command)
@@ -71,6 +108,7 @@ namespace CLARiNET
                     case Command.PHOTO_DOWNLOAD:
                     case Command.PHOTO_UPLOAD:
                     case Command.DOCUMENT_UPLOAD:
+                    case Command.CANDIDATE_ATTACHMENT_UPLOAD:
                         soapUrl = SoapUrlBuild(options.Command);
                         break;
                 }
@@ -110,6 +148,9 @@ namespace CLARiNET
                         break;
                     case Command.DOCUMENT_UPLOAD:
                         Console.WriteLine("\n\nUploading documents...\n\n");
+                        break;
+                    case Command.CANDIDATE_ATTACHMENT_UPLOAD:
+                        Console.WriteLine("\n\nUploading attachments...\n\n");
                         break;
                     default:
                         break;
@@ -152,6 +193,10 @@ namespace CLARiNET
                         case Command.DOCUMENT_UPLOAD:                           
                             bytes = File.ReadAllBytes(file);
                             result = Documents.Upload(file, bytes, soapUrl, processedDir, options);                            
+                            break;
+                        case Command.CANDIDATE_ATTACHMENT_UPLOAD:
+                            bytes = File.ReadAllBytes(file);
+                            result = CandidateAttachments.Upload(file, bytes, soapUrl, processedDir, options);
                             break;
                     }
 
@@ -267,51 +312,6 @@ namespace CLARiNET
                 return false;
             }
 
-            // Ensure Command is uppercase.
-            if (options != null && options.Command != null)
-            {
-                options.Command = options.Command.Trim().ToUpper();
-            }
-
-            // Path parameter is a file
-            if (options != null && options.Path != null && options.Command == Command.CLAR_UPLOAD)
-            {
-                if (File.Exists(options.Path))
-                {
-                    searchPattern = Path.GetFileName(options.Path);
-                    options.Path = options.Path.Substring(0, options.Path.Length - searchPattern.Length);
-                }
-            }
-
-            // Set search pattern and cloud collection if parameters are included.
-            if (options != null && options.Parameters != null)
-            {
-                switch (options.Command)
-                {
-                    case Command.CLAR_UPLOAD:                       
-                        cloudCollection = options.Parameters;
-                        break;
-                    case Command.CLAR_DOWNLOAD:                        
-                        searchPattern = "";
-                        options.Parameters = Path.GetFileName(Path.TrimEndingDirectorySeparator(options.Parameters));
-                        cloudCollection = options.Parameters;
-                        break;
-                    case Command.DRIVE_UPLOAD:
-                    case Command.DRIVE_TRASH:                    
-                        searchPattern = options.Parameters;
-                        break;
-                    case Command.PHOTO_DOWNLOAD:
-                        searchPattern = options.Parameters;
-                        break;
-                    case Command.PHOTO_UPLOAD:
-                    case Command.DOCUMENT_UPLOAD:
-                        searchPattern = "*.*";
-                        break;
-                    default:
-                        break;
-                }                
-            }
-
             return true;
         }
 
@@ -333,53 +333,52 @@ namespace CLARiNET
             Console.WriteLine("\n");
         }
 
-        static void OptionsUI()
-        {
-            // Command
-            CommandOption();
-            // Path
-            PathOption();
-            // Parameters
-            ParameterOption();
-            // Files Check
-            FilesCheck();
-            // Environment
-            EnvironmentOption();
-            // Tenant
-            TenantOption();
-            // Username
-            UsernameOption();
-            // Password
-            PasswordOption();
-        }
-
         static void CommandOption()
         {
             if (String.IsNullOrEmpty(options.Command))
             {
                 Console.WriteLine("Enter the command:\n");
                 options.Command = Console.ReadLine().Trim().ToUpper();
-                Console.WriteLine("");
-                // Check for valid commands
-                switch (options.Command)
-                {
-                    case Command.CLAR_UPLOAD:
-                    case Command.CLAR_DOWNLOAD:
-                    case Command.DRIVE_UPLOAD:                    
-                    case Command.DRIVE_TRASH:
-                    case Command.PHOTO_DOWNLOAD:
-                    case Command.PHOTO_UPLOAD:
-                    case Command.DOCUMENT_UPLOAD:
-                        break;
-                    default:
-                        throw new Exception("Invalid command. Please use --help for a list of valid commands.");
-                }
+                Console.WriteLine(""); 
+            }
+        }
+
+        static void CommandValidate()
+        {
+            // Ensure Command is uppercase.
+            if (options.Command != null)
+            {
+                options.Command = options.Command.Trim().ToUpper();
+            }
+            // Check for valid commands
+            switch (options.Command)
+            {
+                case Command.CLAR_UPLOAD:
+                case Command.CLAR_DOWNLOAD:
+                case Command.DRIVE_UPLOAD:
+                case Command.DRIVE_TRASH:
+                case Command.PHOTO_DOWNLOAD:
+                case Command.PHOTO_UPLOAD:
+                case Command.DOCUMENT_UPLOAD:
+                case Command.CANDIDATE_ATTACHMENT_UPLOAD:
+                    break;
+                default:
+                    throw new Exception("Invalid command. Please use --help for a list of valid commands.");
             }
             Console.WriteLine("\n\nCommand: " + options.Command + "\n");
         }
 
         static void PathOption()
         {
+            // Path parameter is a file
+            if (options.Path != null && options.Command == Command.CLAR_UPLOAD)
+            {
+                if (File.Exists(options.Path))
+                {
+                    searchPattern = Path.GetFileName(options.Path);
+                    options.Path = options.Path.Substring(0, options.Path.Length - searchPattern.Length);
+                }
+            }
             // Path or File
             if (String.IsNullOrEmpty(options.Path))
             {
@@ -400,12 +399,17 @@ namespace CLARiNET
                         break;
                     case Command.PHOTO_UPLOAD:
                     case Command.DOCUMENT_UPLOAD:
+                    case Command.CANDIDATE_ATTACHMENT_UPLOAD:
                         options.Path = inboundDir;
                         break;
                     default:
                         break;
-                }
-            }
+                }                
+            }            
+        }
+
+        static void PathValidate()
+        {
             Console.WriteLine("Processing: " + options.Path + "\n");
         }
 
@@ -446,12 +450,45 @@ namespace CLARiNET
                         break;
                     case Command.PHOTO_UPLOAD:
                     case Command.DOCUMENT_UPLOAD:
+                    case Command.CANDIDATE_ATTACHMENT_UPLOAD:
                         searchPattern = "*.*";
                         break;
                 }
             }
-     
-            Console.WriteLine("Using parameters: " + options.Parameters + "\n");
+        }
+
+        static void ParameterValidate()
+        {
+            // Set search pattern and cloud collection if parameters are included.
+            if (options.Parameters != null)
+            {
+                switch (options.Command)
+                {
+                    case Command.CLAR_UPLOAD:
+                        cloudCollection = options.Parameters;
+                        break;
+                    case Command.CLAR_DOWNLOAD:
+                        searchPattern = "";
+                        options.Parameters = Path.GetFileName(Path.TrimEndingDirectorySeparator(options.Parameters));
+                        cloudCollection = options.Parameters;
+                        break;
+                    case Command.DRIVE_UPLOAD:
+                    case Command.DRIVE_TRASH:
+                        searchPattern = options.Parameters;
+                        break;
+                    case Command.PHOTO_DOWNLOAD:
+                        searchPattern = options.Parameters;
+                        break;
+                    case Command.PHOTO_UPLOAD:
+                    case Command.DOCUMENT_UPLOAD:
+                    case Command.CANDIDATE_ATTACHMENT_UPLOAD:
+                        searchPattern = "*.*";
+                        break;
+                    default:
+                        break;
+                }
+            }
+            Console.WriteLine("Using parameters: " + options.Parameters + "\n");            
         }
 
         static void FilesCheck()
@@ -570,6 +607,9 @@ namespace CLARiNET
                     break;
                 case Command.DOCUMENT_UPLOAD:
                     soapUrl += "/{tenant}/Staffing/{version}";
+                    break;
+                case Command.CANDIDATE_ATTACHMENT_UPLOAD:
+                    soapUrl += "/{tenant}/Recruiting/{version}";
                     break;
             }
             

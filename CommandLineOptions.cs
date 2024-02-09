@@ -9,7 +9,7 @@ namespace CLARiNET
 {
     public class Options
     {
-        [Value(index: 0, MetaName = "Command", Required = false, HelpText = "CLARiNET Commands:\n\nCLAR_UPLOAD\nCLAR_DOWNLOAD\nDRIVE_UPLOAD\nDRIVE_TRASH\nPHOTO_DOWNLOAD\nPHOTO_UPLOAD\nDOCUMENT_UPLOAD")]
+        [Value(index: 0, MetaName = "Command", Required = false, HelpText = "CLARiNET Commands:\n\nCLAR_UPLOAD\nCLAR_DOWNLOAD\nDRIVE_UPLOAD\nDRIVE_TRASH\nPHOTO_DOWNLOAD\nPHOTO_UPLOAD\nDOCUMENT_UPLOAD\nCANDIDATE_ATTACHMENT_UPLOAD")]
         public string Command { get; set; }
 
         [Value(index: 1, MetaName = "File or Directory", Required = false, HelpText = "Path or Path and file name")]
@@ -28,7 +28,12 @@ namespace CLARiNET
         public string Username { get; set; }
 
         [Value(index: 6, MetaName = "Password", Required = false, HelpText = "Password (must be encrypted using the -e option)")]
-        public string Password { get; set; }    
+        public string Password { get; set; }
+
+        [Option('c', "commandline", Required = false,
+               HelpText =
+                   "Display the commandline and exit without executing the commands.")]
+        public bool PrintCommandline { get; set; }
 
         [Option('e', "encrypt", Required = false,
           HelpText =
