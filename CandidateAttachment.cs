@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -19,7 +20,7 @@ namespace CLARiNET
 
             try
             {
-                xmlData = Resources.Put_Candidate_Attachment_Request;
+                xmlData = ResourceFile.Read("Put_Candidate_Attachment_Request.xml");
                 string[] fileVars = Path.GetFileName(file).Split("~");
                 if (fileVars.Length > 1)
                 {
@@ -27,14 +28,16 @@ namespace CLARiNET
                     string candidateId = fileVars[0];
                     string applicationId = fileVars[1];
                     string filename = fileVars[2];
+                    string contentType = WDContentType.Lookup(filename);
                     string comment = "";
                     // worker id ~ filename
                     // TODO: Manifest for comment and content type?
                     xmlData = xmlData.Replace("{candidateId}", candidateId)
                         .Replace("{applicationId}", applicationId)
-                        .Replace("{filename}", filename)
+                        .Replace("{filename}", filename.EscapeXml())
                         .Replace("{filedata}", Convert.ToBase64String(bytes))
-                        .Replace("{comment}", comment);
+                        .Replace("{comment}", comment.EscapeXml())
+                        .Replace("{contentType}", contentType);
 
                     result = WDWebService.CallAPI(options.Username + "@" + options.Tenant, options.Password, soapUrl, xmlData);
                     if (result.IndexOf("<?xml") == 0)

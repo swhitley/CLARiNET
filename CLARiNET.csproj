@@ -7,30 +7,52 @@
     <PackageIcon>CLARiNET.ico</PackageIcon>
     <PackageIconUrl />
     <ApplicationIcon>CLARiNET.ico</ApplicationIcon>
-    <Version>1.2.1</Version>
+    <Version>1.5.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.9.1" />
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.55" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
+    <None Remove="Resources\ContentTypes.json" />
+    <None Remove="Resources\Get_Worker_Photos_Request.xml" />
+    <None Remove="Resources\Put_Candidate_Attachment_Request.xml" />
+    <None Remove="Resources\Put_Drive_Document_Content_Request.xml" />
+    <None Remove="Resources\Put_Drive_Document_Content_Request_Trashed.xml" />
+    <None Remove="Resources\Put_Worker_Document_Request.xml" />
+    <None Remove="Resources\Put_Worker_Photo_Request.xml" />
+    <None Remove="Resources\WDEnvironments.xml" />
+    <None Remove="Resources\WorkdayContentTypes.txt" />
+    <None Remove="Resources\Worker_Reference.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.71" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageReference Include="System.CodeDom" Version="9.0.0" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ContentTypes.json" />
+    <EmbeddedResource Include="Resources\Get_Worker_Photos_Request.xml" />
+    <EmbeddedResource Include="Resources\Put_Candidate_Attachment_Request.xml" />
+    <EmbeddedResource Include="Resources\Put_Drive_Document_Content_Request.xml" />
+    <EmbeddedResource Include="Resources\Put_Drive_Document_Content_Request_Trashed.xml" />
+    <EmbeddedResource Include="Resources\Put_Worker_Document_Request.xml" />
+    <EmbeddedResource Include="Resources\Put_Worker_Photo_Request.xml" />
+    <EmbeddedResource Include="Resources\WDEnvironments.xml" />
+    <EmbeddedResource Include="Resources\WorkdayContentTypes.txt" />
+    <EmbeddedResource Include="Resources\Worker_Reference.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\ResourceFile.cs">
+      <Generator></Generator>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
 </Project>

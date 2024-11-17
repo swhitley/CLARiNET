@@ -19,7 +19,7 @@ namespace CLARiNET
 
             try
             {
-                xmlData = Resources.Put_Worker_Document_Request;
+                xmlData = ResourceFile.Read("Put_Worker_Document_Request.xml");
                 string[] fileVars = Path.GetFileName(file).Split("~");
                 if (fileVars.Length > 1)
                 {
@@ -28,7 +28,7 @@ namespace CLARiNET
                     string filename = fileVars[1];
                     string workerType = "Employee_ID";
                     string comment = "";
-                    string contentType = "";
+                    string contentType = WDContentType.Lookup(filename);
                     if (fileVars.Length > 2)
                     {
                         filename = fileVars[2];
@@ -41,11 +41,11 @@ namespace CLARiNET
                     // worker id ~ C ~ filename
                     // TODO: Manifest for comment and content type?
                     xmlData = xmlData.Replace("{workerId}", workerId)
-                        .Replace("{filename}", filename)
+                        .Replace("{filename}", filename.EscapeXml())
                         .Replace("{workerIdType}", workerType)
                         .Replace("{filedata}", Convert.ToBase64String(bytes))
                         .Replace("{documentCategory}", options.Parameters)
-                        .Replace("{comment}", comment)
+                        .Replace("{comment}", comment.EscapeXml())
                         .Replace("{contentType}", contentType);
 
                     result = WDWebService.CallAPI(options.Username + "@" + options.Tenant, options.Password, soapUrl, xmlData);

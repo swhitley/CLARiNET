@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bsvc:Put_Worker_Photo_Request bsvc:version="v39.1" xmlns:bsvc="urn:com.workday/bsvc">
+	<bsvc:Worker_Reference>
+		<bsvc:ID bsvc:type="{workerIdType}">{workerId}</bsvc:ID>
+	</bsvc:Worker_Reference>
+	<bsvc:Worker_Photo_Data>
+		<bsvc:ID>{workerId}</bsvc:ID>
+		<bsvc:Filename>{filename}</bsvc:Filename>
+		<bsvc:File>{filedata}</bsvc:File>
+	</bsvc:Worker_Photo_Data>
+</bsvc:Put_Worker_Photo_Request>

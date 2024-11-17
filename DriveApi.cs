@@ -37,18 +37,21 @@ namespace CLARiNET
 
                 if (trashed)
                 {
-                    xmlData = Resources.Put_Drive_Document_Content_Trash_Request;
+                    xmlData = ResourceFile.Read("Put_Drive_Document_Content_Request_Trashed.xml");
                 }
                 else
                 {
-                    xmlData = Resources.Put_Drive_Document_Content_Request;
+                    xmlData = ResourceFile.Read("Put_Drive_Document_Content_Request.xml");
                 }
+
+                string contentType = WDContentType.Lookup(filename);
 
                 xmlData = xmlData.Replace("{contents}", contents)
                     .Replace("{document_wid}", wid)
-                    .Replace("{filename}", filename)
-                    .Replace("{owned_by_username}", username)
-                    .Replace("{uploaded_by_username}", username);
+                    .Replace("{filename}", filename.EscapeXml())
+                    .Replace("{owned_by_username}", username.EscapeXml())
+                    .Replace("{uploaded_by_username}", username.EscapeXml())
+                    .Replace("{contentType}", contentType);
             }
             else
             {

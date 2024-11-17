@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace CLARiNET
 {
     public class Options
     {
-        [Value(index: 0, MetaName = "Command", Required = false, HelpText = "CLARiNET Commands:\n\nCLAR_UPLOAD\nCLAR_DOWNLOAD\nDRIVE_UPLOAD\nDRIVE_TRASH\nPHOTO_DOWNLOAD\nPHOTO_UPLOAD\nDOCUMENT_UPLOAD\nCANDIDATE_ATTACHMENT_UPLOAD")]
+        [Value(index: 0, MetaName = "Command", Required = false, HelpText = "CLARiNET Commands:\n\n" + CLARiNET.Commands.COMMAND_LIST)]
         public string Command { get; set; }
 
         [Value(index: 1, MetaName = "File or Directory", Required = false, HelpText = "Path or Path and file name")]
@@ -45,5 +46,8 @@ namespace CLARiNET
              "Display the Workday environments and their associated numbers")]
         public bool PrintEnvironments { get; set; }
 
+
     }
+
+   
 }

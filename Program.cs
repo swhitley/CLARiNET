@@ -8,6 +8,7 @@ using System.Net;
 using System.Text;
 using System.Xml.XPath;
 using System.Xml;
+using HtmlAgilityPack;
 
 namespace CLARiNET
 {
@@ -26,7 +27,7 @@ namespace CLARiNET
         const string cloudRepoUrl = ccxUrl + "/cc-cloud-repo/collections/";
 
         static void Main(string[] args)
-        {            
+        {
             string soapUrl = "";
             string restUrl = "";
 
@@ -39,7 +40,7 @@ namespace CLARiNET
                 Console.WriteLine("\n** CLARiNET by Whitley Media **\n\n");
 
                 InitDirectories(inboundDir, processedDir);
-
+                
                 if (!InitOptions(args))
                 {
                     return;
@@ -47,13 +48,13 @@ namespace CLARiNET
 
                 if (options.Encrypt)
                 {
-                    OptionsEncrypt();
+                    CommandLineAuth.OptionsEncrypt();
                     return;
                 }
 
                 if (options.PrintEnvironments)
                 {
-                    PrintEnvironments(envs);
+                    CommandLineEnv.PrintEnvironments(envs);
                     return;
                 }
 
@@ -61,44 +62,50 @@ namespace CLARiNET
                 if (options != null)
                 {
                     // Command
-                    CommandOption();
-                    CommandValidate();
+                    options.Command = CommandLineCommand.CommandGet(options.Command);
+                    options.Command = CommandLineCommand.CommandValidate(options.Command);
                     // Path
-                    PathOption();
-                    PathValidate();
+                    options.Path = CommandLinePath.PathOption(options.Path, options.Command);
+                    CommandLinePath.PathValidate(options.Path);
                     // Parameters
-                    ParameterOption();
-                    ParameterValidate();
+                    (options.Parameters, cloudCollection, searchPattern) = CommandLineParameters.ParameterOption(options.Command, options.Parameters, cloudCollection, searchPattern);
+                    (options.Parameters, cloudCollection, searchPattern) = CommandLineParameters.ParameterValidate(options.Command, options.Parameters, cloudCollection, searchPattern);
                     // Files Check
-                    FilesCheck();
+                    files = CommandLineFiles.FilesCheck(options.Command, options.Path, searchPattern);
                     // Environment
-                    EnvironmentOption();
+                    (options.EnvNum, host) = CommandLineEnv.EnvironmentOption(options.EnvNum, envs);
                     // Tenant
-                    TenantOption();
+                    options.Tenant = CommandLineTenant.TenantOption(options.Tenant);
                     // Username
-                    UsernameOption();
+                    options.Username = CommandLineAuth.UsernameOption(options.Username);
                     // Password
-                    PasswordOption();
+                    options.Password = CommandLineAuth.PasswordOption(options.Password);
                 }
 
+                string quote = "'";
+                if (OperatingSystem.IsWindows())
+                {
+                    quote = "\"";
+                }
+
+                Console.WriteLine("\n\n");
+                Console.WriteLine("clarinet {0} {1} {2} {3} {4} {5} {6}",
+                    options.Command,
+                    quote + options.Path + quote,
+                    quote + options.Parameters + quote,
+                    host,
+                    options.Tenant,
+                    options.Username,
+                    Crypto.Protect(options.Password));
+                Console.WriteLine("\n\n");
                 if (options.PrintCommandline)
                 {
-                    Console.WriteLine("\n\n");
-                    Console.WriteLine("clarinet {0} {1} {2} {3} {4} {5} {6}",
-                        options.Command,
-                        options.Path,
-                        options.Parameters,
-                        options.EnvNum,
-                        options.Tenant,
-                        options.Username,
-                        Crypto.Protect(options.Password));
-                    Console.WriteLine("\n\n");
                     return;
                 }
 
 
                 // Post Init and UI Option Handling
-                switch (options.Command)
+                switch (options.Command.ToEnum<Command>())
                 {
                     case Command.CLAR_UPLOAD:
                     case Command.CLAR_DOWNLOAD:                    
@@ -121,7 +128,7 @@ namespace CLARiNET
                 files = Directory.GetFiles(options.Path, searchPattern, new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive });
 
                 // Special file handling and console update
-                switch (options.Command)
+                switch (options.Command.ToEnum<Command>())
                 {
                     case Command.CLAR_UPLOAD:
                         Console.WriteLine("\n\nDeploying the CLAR and awaiting the result...\n\n");
@@ -132,6 +139,7 @@ namespace CLARiNET
                         break;
                     case Command.DRIVE_UPLOAD:
                         Console.WriteLine("\n\nUploading files...\n\n");
+                        WDContentType.Load();
                         break;
                     case Command.DRIVE_TRASH:
                         Console.WriteLine("\n\nTrashing files...\n\n");
@@ -148,9 +156,11 @@ namespace CLARiNET
                         break;
                     case Command.DOCUMENT_UPLOAD:
                         Console.WriteLine("\n\nUploading documents...\n\n");
+                        WDContentType.Load();
                         break;
                     case Command.CANDIDATE_ATTACHMENT_UPLOAD:
                         Console.WriteLine("\n\nUploading attachments...\n\n");
+                        WDContentType.Load();
                         break;
                     default:
                         break;
@@ -160,7 +170,7 @@ namespace CLARiNET
                 {
                     Byte[] bytes;
 
-                    switch (options.Command)
+                    switch (options.Command.ToEnum<Command>())
                     {
                         case Command.CLAR_UPLOAD:
                             bytes = File.ReadAllBytes(file);
@@ -178,10 +188,10 @@ namespace CLARiNET
                             break;
                         case Command.DRIVE_UPLOAD:                            
                             bytes = File.ReadAllBytes(file);
-                            result = DriveUpload(file, bytes, soapUrl, options.Username);
+                            result = DriveProcess.DriveUpload(options, processedDir, file, bytes, soapUrl, options.Username);
                             break;
                         case Command.DRIVE_TRASH:                            
-                            result = DriveTrash(file, soapUrl, options.Username);
+                            result = DriveProcess.DriveTrash(options, file, soapUrl, options.Username);
                             break;
                         case Command.PHOTO_DOWNLOAD:
                             result = Photos.Download(options, file, soapUrl);
@@ -222,65 +232,6 @@ namespace CLARiNET
             }
         }
 
-        private static string PasswordPrompt()
-        {
-            string pass = string.Empty;
-            ConsoleKey key;
-            do
-            {
-                var keyInfo = Console.ReadKey(intercept: true);
-                key = keyInfo.Key;
-
-                if (key == ConsoleKey.Backspace && pass.Length > 0)
-                {
-                    Console.Write("\b \b");
-                    pass = pass[0..^1];
-                }
-                else if (!char.IsControl(keyInfo.KeyChar))
-                {
-                    Console.Write("*");
-                    pass += keyInfo.KeyChar;
-                }
-            } while (key != ConsoleKey.Enter);
-            return pass;
-        }
-
-        private static void PrintEnvironments(List<XElement> envs)
-        {
-            string[] envName = new string[3];
-            string colFormat = "{0,-35} {1,-35} {2,-35}\n";
-
-            Console.WriteLine("-- Workday Environments --\n");
-            for (int ndx = 0; ndx < envs.Count; ndx++)
-            {
-                if (ndx > 0 && ndx % 3 == 0)
-                {
-                    Console.Write(colFormat, envName[0], envName[1], envName[2]);
-                    envName = new string[3];
-                }
-                if (envName[0] == null)
-                {
-                    envName[0] = ndx + 1 + ") " + envs[ndx].FirstAttribute.Value;
-                }
-                else
-                {
-                    if (envName[1] == null)
-                    {
-                        envName[1] = ndx + 1 + ") " + envs[ndx].FirstAttribute.Value;
-                    }
-                    else
-                    {
-                        envName[2] = ndx + 1 + ") " + envs[ndx].FirstAttribute.Value;
-                    }
-                }
-            }
-            if (envName[0] != null)
-            {
-                Console.Write(colFormat, envName[0], envName[1], envName[2]);
-            }
-            Console.WriteLine("\n");
-        }
-
         static void InitDirectories(string inboundDir, string outboundDir)
         {
             // Create inbound/outbount directories
@@ -296,12 +247,18 @@ namespace CLARiNET
 
         static bool InitOptions(string[] args)
         {
-            // Parse Environments
-            XDocument xDoc = XDocument.Parse(Resources.WDEnvironments);
+            // Parse Environments            
+            XDocument xDoc = XDocument.Parse(ResourceFile.Read("WDEnvironments.xml"));
             envs = new List<XElement>(xDoc.Descendants(XName.Get("env")));
 
+            // Custom Host Node
+            XElement custom = new XElement("env", new XElement("e2-endpoint") { Value = "{custom}"});
+            custom.SetAttributeValue("name", "Enter a Custom Host Name");
+            custom.SetAttributeValue("type", "impl");
+            envs.Add(custom);
+
             // Parse Arguments
-            ParserResult<Options> pResult = Parser.Default.ParseArguments<Options>(args)
+            ParserResult <Options> pResult = Parser.Default.ParseArguments<Options>(args)
                 .WithParsed<Options>(o =>
                 {
                     options = o;
@@ -313,289 +270,13 @@ namespace CLARiNET
             }
 
             return true;
-        }
-
-        static void OptionsEncrypt()
-        {
-            Console.WriteLine("Enter a password to encrypt:\n");
-            string pass = PasswordPrompt();
-            string encPass = "";
-            try
-            {
-                encPass = Crypto.Protect(pass);
-            }
-            // Perform a retry
-            catch
-            {
-                encPass = Crypto.Protect(pass);
-            }
-            Console.WriteLine("\n\n" + encPass);
-            Console.WriteLine("\n");
-        }
-
-        static void CommandOption()
-        {
-            if (String.IsNullOrEmpty(options.Command))
-            {
-                Console.WriteLine("Enter the command:\n");
-                options.Command = Console.ReadLine().Trim().ToUpper();
-                Console.WriteLine(""); 
-            }
-        }
-
-        static void CommandValidate()
-        {
-            // Ensure Command is uppercase.
-            if (options.Command != null)
-            {
-                options.Command = options.Command.Trim().ToUpper();
-            }
-            // Check for valid commands
-            switch (options.Command)
-            {
-                case Command.CLAR_UPLOAD:
-                case Command.CLAR_DOWNLOAD:
-                case Command.DRIVE_UPLOAD:
-                case Command.DRIVE_TRASH:
-                case Command.PHOTO_DOWNLOAD:
-                case Command.PHOTO_UPLOAD:
-                case Command.DOCUMENT_UPLOAD:
-                case Command.CANDIDATE_ATTACHMENT_UPLOAD:
-                    break;
-                default:
-                    throw new Exception("Invalid command. Please use --help for a list of valid commands.");
-            }
-            Console.WriteLine("\n\nCommand: " + options.Command + "\n");
-        }
-
-        static void PathOption()
-        {
-            // Path parameter is a file
-            if (options.Path != null && options.Command == Command.CLAR_UPLOAD)
-            {
-                if (File.Exists(options.Path))
-                {
-                    searchPattern = Path.GetFileName(options.Path);
-                    options.Path = options.Path.Substring(0, options.Path.Length - searchPattern.Length);
-                }
-            }
-            // Path or File
-            if (String.IsNullOrEmpty(options.Path))
-            {
-                switch (options.Command)
-                {
-                    case Command.CLAR_UPLOAD:
-                    case Command.CLAR_DOWNLOAD:
-                        options.Path = appDir;
-                        break;
-                    case Command.DRIVE_UPLOAD:
-                        options.Path = inboundDir;
-                        break;
-                    case Command.DRIVE_TRASH:
-                        options.Path = appDir;
-                        break;
-                    case Command.PHOTO_DOWNLOAD:
-                        options.Path = appDir;
-                        break;
-                    case Command.PHOTO_UPLOAD:
-                    case Command.DOCUMENT_UPLOAD:
-                    case Command.CANDIDATE_ATTACHMENT_UPLOAD:
-                        options.Path = inboundDir;
-                        break;
-                    default:
-                        break;
-                }                
-            }            
-        }
-
-        static void PathValidate()
-        {
-            Console.WriteLine("Processing: " + options.Path + "\n");
-        }
-
-        static void ParameterOption()
-        {
-            if (String.IsNullOrEmpty(options.Parameters))
-            {
-                switch (options.Command)
-                {
-                    case Command.CLAR_UPLOAD:
-                    case Command.CLAR_DOWNLOAD:
-                        Console.WriteLine("Enter the Cloud Collection:\n");
-                        cloudCollection = Console.ReadLine().Trim();
-                        Console.WriteLine("");
-                        options.Parameters = cloudCollection;
-                        if (searchPattern.ToLower().IndexOf(".clar") < 0)
-                        {
-                            searchPattern = "*.clar";
-                        }
-                        if (options.Command == Command.CLAR_DOWNLOAD)
-                        {
-                            searchPattern = "";
-                        }
-                        break;
-                    case Command.DRIVE_UPLOAD:
-                        options.Parameters = "*.*";
-                        searchPattern = options.Parameters;
-                        break;
-                    case Command.DRIVE_TRASH:
-                        options.Parameters = "*trash*";
-                        searchPattern = options.Parameters;
-                        break;
-                    case Command.PHOTO_DOWNLOAD:
-                        Console.WriteLine("Enter the id file name:\n");
-                        options.Parameters = Console.ReadLine().Trim();
-                        Console.WriteLine("");
-                        searchPattern = options.Parameters;     
-                        break;
-                    case Command.PHOTO_UPLOAD:
-                    case Command.DOCUMENT_UPLOAD:
-                    case Command.CANDIDATE_ATTACHMENT_UPLOAD:
-                        searchPattern = "*.*";
-                        break;
-                }
-            }
-        }
-
-        static void ParameterValidate()
-        {
-            // Set search pattern and cloud collection if parameters are included.
-            if (options.Parameters != null)
-            {
-                switch (options.Command)
-                {
-                    case Command.CLAR_UPLOAD:
-                        cloudCollection = options.Parameters;
-                        break;
-                    case Command.CLAR_DOWNLOAD:
-                        searchPattern = "";
-                        options.Parameters = Path.GetFileName(Path.TrimEndingDirectorySeparator(options.Parameters));
-                        cloudCollection = options.Parameters;
-                        break;
-                    case Command.DRIVE_UPLOAD:
-                    case Command.DRIVE_TRASH:
-                        searchPattern = options.Parameters;
-                        break;
-                    case Command.PHOTO_DOWNLOAD:
-                        searchPattern = options.Parameters;
-                        break;
-                    case Command.PHOTO_UPLOAD:
-                    case Command.DOCUMENT_UPLOAD:
-                    case Command.CANDIDATE_ATTACHMENT_UPLOAD:
-                        searchPattern = "*.*";
-                        break;
-                    default:
-                        break;
-                }
-            }
-            Console.WriteLine("Using parameters: " + options.Parameters + "\n");            
-        }
-
-        static void FilesCheck()
-        {
-            files = Directory.GetFiles(options.Path, searchPattern, new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive });
-            if (files.Length > 0)
-            {
-                if (files.Length == 1)
-                {
-                    Console.WriteLine("File name: " + files[0] + "\n");
-                }
-                else
-                {
-                    Console.WriteLine("Found {0:N0} files.\n", files.Length);
-                    Console.WriteLine("First file name: " + files[0] + "\n");
-                }
-            }
-            else
-            {
-                if (options.Command == Command.CLAR_DOWNLOAD)
-                {
-                    if (!Directory.Exists(options.Path))
-                    {
-                        throw new Exception("Directory does not exist.");
-                    }
-                }
-                else
-                {
-                    throw new Exception("No files found.");
-                }
-            }
-        }
-
-        static void EnvironmentOption()
-        {
-            if (String.IsNullOrEmpty(options.EnvNum))
-            {
-                do
-                {
-                    PrintEnvironments(envs);
-                    Console.WriteLine("Enter the number that identifies the Workday environment (1 - " + envs.Count + "):\n");
-                    options.EnvNum = Console.ReadLine().Trim();
-                    Console.WriteLine("");
-                    int envNum = 0;
-                    if (int.TryParse(options.EnvNum, out envNum))
-                    {
-                        if (envNum < envs.Count)
-                        {
-                            host = envs[envNum - 1].Element(XName.Get("e2-endpoint")).Value;
-                            Console.WriteLine("\nHost: " + host + "\n");
-                            Console.WriteLine("Is the Host correct? (Y/N)\n");
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Entry was incorrect. Press {enter} to continue.\n");
-                    }
-                } while (Console.ReadLine().Trim().ToUpper() != "Y");
-                Console.WriteLine("\n");
-            }
-            else
-            {
-                // Look up the host based on the number.
-                host = envs[(int.Parse(options.EnvNum)) - 1].Element(XName.Get("e2-endpoint")).Value;
-            }
-        }
-
-        static void TenantOption()
-        {
-            // Tenant
-            if (String.IsNullOrEmpty(options.Tenant))
-            {
-                Console.WriteLine("Enter the tenant:\n");
-                options.Tenant = Console.ReadLine().Trim();
-                Console.WriteLine("");
-            }
-        }
-
-        static void UsernameOption()
-        {
-            // Username
-            if (String.IsNullOrEmpty(options.Username))
-            {
-                Console.WriteLine("Enter the username:\n");
-                options.Username = Console.ReadLine().Trim();
-                Console.WriteLine("");
-            }
-        }
-
-        static void PasswordOption()
-        {
-            if (String.IsNullOrEmpty(options.Password))
-            {
-                Console.WriteLine("Enter the password (will not be displayed):\n");
-                options.Password = PasswordPrompt();
-            }
-            else
-            {
-                options.Password = Crypto.Unprotect(options.Password);
-            }
-        }
+        }        
 
         static string SoapUrlBuild(string command)
         {
             string soapUrl = ccxUrl.Replace("{host}", host);
             soapUrl = WDWebService.GetServiceURL(soapUrl, options.Tenant, options.Username, options.Password);
-            switch (options.Command)
+            switch (options.Command.ToEnum<Command>())
             {
                 case Command.DRIVE_UPLOAD:
                 case Command.DRIVE_TRASH:
@@ -615,59 +296,6 @@ namespace CLARiNET
             
             return soapUrl;
         }
-
-        static string DriveUpload(string file, byte[] bytes, string soapUrl, string uploadedBy)
-        {
-            string result = "";
-            try
-            {
-                if (file.Trim().Length > 0)
-                {
-                    Console.WriteLine("\n\nUploading " + file + " to Drive and awaiting the result...\n\n");
-                    string fileContents = Convert.ToBase64String(bytes);
-                    string xmlData = DriveApi.BuildSoapRequest(file, fileContents, uploadedBy, false);
-                    result = WDWebService.CallAPI(options.Username + "@" + options.Tenant, options.Password, soapUrl, xmlData);
-                    if (result.IndexOf("<?xml") == 0)
-                    {
-                        string processedFile = Path.Combine(processedDir, Path.GetFileName(file));
-                        int num = 2;
-                        while (File.Exists(processedFile) && num < 100)
-                        {
-                            processedFile = Path.Combine(processedDir, Path.GetFileNameWithoutExtension(file) + "." + num.ToString("000") + Path.GetExtension(file));
-                            num++;
-                        }
-                        File.Move(file, processedFile);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("\n\nError: " + ex.Message);
-                Console.WriteLine("\n");
-            }
-
-            return result;
-        }
-
-        static string DriveTrash(string file, string soapUrl, string uploadedBy)
-        {
-            string result = "";
-            try
-            {
-                if (file.Trim().Length > 0)
-                {
-                    Console.WriteLine("\n\nTrashing " + file + " in Drive and awaiting the result...\n\n");
-                    string xmlData = DriveApi.BuildSoapRequest(file, "", uploadedBy, true);
-                    result = WDWebService.CallAPI(options.Username + "@" + options.Tenant, options.Password, soapUrl, xmlData);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("\n\nError: " + ex.Message);
-                Console.WriteLine("\n");
-            }
-
-            return result;
-        }
+       
     }
 }

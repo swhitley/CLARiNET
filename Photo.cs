@@ -15,7 +15,7 @@ namespace CLARiNET
         public static string Download(Options options, string file, string soapUrl)
         {
             string xmlData = "";
-            string workerRef = Resources.Worker_Reference;
+            string workerRef = ResourceFile.Read("Worker_Reference.txt");
             string result = "";
             string path = Path.GetDirectoryName(file);
             int batchErrors = 0;
@@ -31,7 +31,7 @@ namespace CLARiNET
                 {
                     try
                     {
-                        xmlData = Resources.Get_Worker_Photos_Request;
+                        xmlData = ResourceFile.Read("Get_Worker_Photos_Request.xml");
                         foreach (var item in batch)
                         {
                             if (!String.IsNullOrEmpty(item.Key))
@@ -114,7 +114,7 @@ namespace CLARiNET
 
             try
             {
-                xmlData = Resources.Put_Worker_Photo_Request;
+                xmlData = ResourceFile.Read("Put_Worker_Photo_Request.xml");
                 string[] fileVars = Path.GetFileName(file).Split("~");
                 if (fileVars.Length > 1)
                 {

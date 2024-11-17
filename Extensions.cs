@@ -39,5 +39,22 @@ namespace CLARiNET
             var base64String = Convert.ToBase64String(Encoding.ASCII.GetBytes(authenticationString));
             http.Headers.Authorization = new AuthenticationHeaderValue("Basic", base64String);
         }
+
+        public static string EscapeXml(this string xml)
+        {
+            return xml.Replace("&", "&amp;")
+                    .Replace("<", "&lt;")
+                    .Replace(">", "&gt;")
+                    .Replace("\"", "&quot;")
+                    .Replace("'", "&apos;");
+        }
+
+        public static TEnum ToEnum<TEnum>(this string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return default;
+
+            return (TEnum)Enum.Parse(typeof(TEnum), value, true);
+        }
     }
 }

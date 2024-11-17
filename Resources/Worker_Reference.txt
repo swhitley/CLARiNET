@@ -1,0 +1,3 @@
+﻿<bsvc:Worker_Reference>
+	<bsvc:ID bsvc:type="{id_type}">{id}</bsvc:ID>
+</bsvc:Worker_Reference>

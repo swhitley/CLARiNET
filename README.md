@@ -186,3 +186,5 @@ Command Line Parser - https://github.com/commandlineparser/commandline ([MIT](ht
 
 CLARiNET is compatible with Workday®
 It is not sponsored, affiliated with, or endorsed by Workday.
+
+- Mime Data - https://raw.githubusercontent.com/patrickmccallum/mimetype-io/master/src/mimeData.json

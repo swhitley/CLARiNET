@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bsvc:Put_Worker_Document_Request bsvc:Add_Only="false" bsvc:version="v37.0" xmlns:bsvc="urn:com.workday/bsvc">
+	<bsvc:Worker_Document_Data>
+		<bsvc:Filename>{filename}</bsvc:Filename>
+		<bsvc:Comment>{comment}</bsvc:Comment>
+		<bsvc:File>{filedata}</bsvc:File>
+		<bsvc:Document_Category_Reference>
+			<bsvc:ID bsvc:type="Document_Category_ID">{documentCategory}</bsvc:ID>
+		</bsvc:Document_Category_Reference>
+		<bsvc:Worker_Reference>
+			<bsvc:ID bsvc:type="{workerIdType}">{workerId}</bsvc:ID>
+		</bsvc:Worker_Reference>
+		<bsvc:Content_Type>{contentType}</bsvc:Content_Type>
+	</bsvc:Worker_Document_Data>
+</bsvc:Put_Worker_Document_Request>

@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bsvc:Get_Worker_Photos_Request bsvc:version="v37.0" xmlns:bsvc="urn:com.workday/bsvc">
+	<bsvc:Request_References bsvc:Skip_Non_Existing_Instances="true" bsvc:Ignore_Invalid_References="true">
+		{worker_references}
+	</bsvc:Request_References>
+</bsvc:Get_Worker_Photos_Request>

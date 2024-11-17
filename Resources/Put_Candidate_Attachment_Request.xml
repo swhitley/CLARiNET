@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bsvc:Put_Candidate_Attachment_Request bsvc:Add_Only="false" bsvc:version="v41.1" xmlns:bsvc="urn:com.workday/bsvc">
+	<bsvc:Candidate_Reference>
+		<bsvc:ID bsvc:type="Candidate_ID">{candidateId}</bsvc:ID>
+	</bsvc:Candidate_Reference>
+	<bsvc:Job_Application_Attachment_Data>
+		<bsvc:Job_Application_Reference>
+			<bsvc:ID bsvc:type="Job_Application_ID">{applicationId}</bsvc:ID>
+		</bsvc:Job_Application_Reference>
+		<bsvc:Attachment_Data>
+			<bsvc:Filename>{filename}</bsvc:Filename>
+			<bsvc:File_Content>{filedata}</bsvc:File_Content>
+			<bsvc:Comment>{comment}</bsvc:Comment>
+			<bsvc:Mime_Type_Reference>
+				<bsvc:ID bsvc:type="Content_Type_ID">{contentType}</bsvc:ID>
+			</bsvc:Mime_Type_Reference>
+		</bsvc:Attachment_Data>
+	</bsvc:Job_Application_Attachment_Data>
+</bsvc:Put_Candidate_Attachment_Request>

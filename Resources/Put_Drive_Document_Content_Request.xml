@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<bsvc:Put_Drive_Document_Content_Request bsvc:version="v37.0"                                         xmlns:bsvc="urn:com.workday/bsvc">
+	<bsvc:Add_Only>true</bsvc:Add_Only>
+	<bsvc:Drive_Document_Content_Data>
+		<bsvc:Drive_Document_Content_File_Name>{filename}</bsvc:Drive_Document_Content_File_Name>
+		<bsvc:Workdrive_Item_Generic_Data>
+			<bsvc:Drive_Item_Name>{filename}</bsvc:Drive_Item_Name>
+			<bsvc:Trashed>false</bsvc:Trashed>
+			<bsvc:Owned_By_Reference>
+				<bsvc:ID bsvc:type="WorkdayUserName">{owned_by_username}</bsvc:ID>
+			</bsvc:Owned_By_Reference>
+		</bsvc:Workdrive_Item_Generic_Data>
+		<bsvc:File>{contents}</bsvc:File>
+		<bsvc:Drive_Mime_Type_Reference>
+			<bsvc:ID bsvc:type="Content_Type_ID">{contentType}</bsvc:ID>
+		</bsvc:Drive_Mime_Type_Reference>
+		<bsvc:Drive_File_Uploaded_By_Reference>
+			<bsvc:ID bsvc:type="WorkdayUserName">{uploaded_by_username}</bsvc:ID>
+		</bsvc:Drive_File_Uploaded_By_Reference>
+	</bsvc:Drive_Document_Content_Data>
+</bsvc:Put_Drive_Document_Content_Request>
