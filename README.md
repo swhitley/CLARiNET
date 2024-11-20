@@ -5,6 +5,15 @@ A Workday command-line interface (CLI) for working with files (Drive, Documents,
 
 Windows or Mac
 
+Supported Commands:
+
+| -- Commands --     |                                |                 |
+|--------------------|--------------------------------|-----------------|
+| 1) CLAR_UPLOAD     | 2) CLAR_DOWNLOAD               | 3) DRIVE_UPLOAD |
+| 4) DRIVE_TRASH     | 5) PHOTO_DOWNLOAD              | 6) PHOTO_UPLOAD |
+| 7) DOCUMENT_UPLOAD | 8) CANDIDATE_ATTACHMENT_UPLOAD |                 |
+
+
 ## Workday Drive Features
 - Upload files in bulk to Workday Drive. Load files for different Workday user accounts.
 - Send files to the Workday Drive Trash.
@@ -12,6 +21,7 @@ Windows or Mac
 ## Documents
 - Mass file upload to Worker Documents.
 - Select a different document category with each run.
+- Mass file upload to Candidate Attachments
 
 ## Profile Pictures
 - Download or upload worker profile pictures.
@@ -76,6 +86,16 @@ Please note that a file is not deleted when sent to the trash.  Files can be ind
 - The `clarinet` command is **DOCUMENT_UPLOAD**.
 - Enter the document category reference id in the CLARiNET `Parameters` option.  This document category will be used for all files.
 - Each file in the `inbound` directory will be uploaded to worker documents for the appropriate Workday employee.  The file name will only show the text following the tilde (\~).
+- Once uploaded successfully, each file will be moved to the `processed` directory.
+
+## Uploading files to Candidate Attachments
+
+- Ensure that a directory named `inbound` has been created alongside the `clarinet` program file.  The directory will be created automatically when `clarinet` is executed.
+- Place each file in the inbound directory with the following file name format:   {Candidate ID}\~{Job Application ID}\~{File Name}<br/>
+  Example:  CAND-1124\~JOB_APPLICATION-11-256\~Resume.pdf
+- Enter `clarinet` on a line by itself.  The application will prompt for all necessary information.
+- The `clarinet` command is **CANDIDATE_ATTACHMENT_UPLOAD**.
+- Each file in the `inbound` directory will be uploaded to candidate attachments under Resume/Cover Letter for the appropriate candidate.  The file name will only show the text following the tilde (\~) after the job application id.
 - Once uploaded successfully, each file will be moved to the `processed` directory.
 
 ## Download Profile Pictures (Employee Photos)
